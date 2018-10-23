@@ -1,6 +1,7 @@
 function Actor(_id) {
-	const _healthComponent = EmptyHealthComponent()
-	const _renderComponents = []
+	var _healthComponent = EmptyHealthComponent()
+	var _mobilityComponent = EmptyComponent()
+	var _renderComponents = []
 	var _position = Vector(0.0, 0.0)
 
 	function id() { return _id }
@@ -9,9 +10,11 @@ function Actor(_id) {
 	function x() { return _position.x() }
 	function y() { return _position.y() }
 	function setHealthComponent(component) { _healthComponent = component }
+	function setMobilityComponent(component) { _mobilityComponent = component }
 	function addRenderComponent(component) { _renderComponents.push(component) }
 
 	function updateBattle(deltaTimeMillisecond) {
+		_mobilityComponent.update(deltaTimeMillisecond)
 		_healthComponent.update()
 	}
 
@@ -26,8 +29,13 @@ function Actor(_id) {
 		x,
 		y,
 		setHealthComponent,
+		setMobilityComponent,
 		addRenderComponent,
 		updateBattle,
 		render
 	}
+}
+
+function EmptyComponent() {
+	return {update: (deltaTimeMillisecond) => {}}
 }

@@ -1,3 +1,4 @@
+
 function Vector(_x, _y) {
 
 	function x() { return _x }

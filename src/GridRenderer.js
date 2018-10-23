@@ -16,7 +16,7 @@ function GridRenderer(_actors, _terrain) {
 	
 	{
 		const grid = document.getElementById("grid")
-		if (grid !== null) screen.removeChild()
+		if (grid !== null) screen.removeChild(grid)
 	}
 
 	const table = document.createElement("table")

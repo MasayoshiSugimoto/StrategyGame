@@ -14,5 +14,9 @@ function ActorSystem(_terrain) {
 		GridRenderer(_actors, _terrain)
 	}
 
-	return {createActor, update}
+	function findActor(actorId) {
+		return _actors.find(actor => actor.id() === actorId)
+	}
+
+	return {createActor, update, findActor}
 }
