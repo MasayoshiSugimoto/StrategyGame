@@ -1,17 +1,14 @@
-function GridRenderer(actors) {
-
-	const width = 100
-	const height = 100
+function GridRenderer(_actors, _terrain) {
 
 	const _grid = []
-	for (x = 0; x < width; x++) {
+	for (x = 0; x < _terrain.width(); x++) {
 		_grid[x] = []
-		for (y = 0; y < height; y++) {
+		for (y = 0; y < _terrain.height(); y++) {
 			_grid[x][y] = false
 		}
 	}
 
-	actors.forEach(actor => {
+	_actors.forEach(actor => {
 		_grid[actor.x()][actor.y()] = true;
 	})
 
@@ -29,6 +26,7 @@ function GridRenderer(actors) {
 		const tr = document.createElement("tr")
 		column.forEach(cell => {
 			const th = document.createElement("td")
+			th.className = "cell"
 			if (cell) th.style.backgroundColor = "black"
 			tr.appendChild(th)
 		})

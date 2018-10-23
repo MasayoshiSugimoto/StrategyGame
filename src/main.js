@@ -2,27 +2,20 @@
 function main() {
 	console.log("Starting game...")
 
-	const actorSystem = ActorSystem()
-	{
+	const terrain = Terrain()
+	const actorSystem = ActorSystem(terrain)
+
+	const createActor = () => {
 		let actor = actorSystem.createActor()
-		actor.setPosition(Vector(0.0, 0.0))
+		const x = Math.floor(Math.random() * terrain.width())
+		const y = Math.floor(Math.random() * terrain.height())
+		actor.setPosition(Vector(x, y))
 	}
-	{
-		let actor = actorSystem.createActor()
-		actor.setPosition(Vector(1.0, 1.0))
-	}
-	{
-		let actor = actorSystem.createActor()
-		actor.setPosition(Vector(2.0, 2.0))
-	}
-	{
-		let actor = actorSystem.createActor()
-		actor.setPosition(Vector(3.0, 3.0))
-	}
-	{
-		let actor = actorSystem.createActor()
-		actor.setPosition(Vector(4.0, 4.0))
-	}
+	createActor()
+	createActor()
+	createActor()
+	createActor()
+	createActor()
 
 	window.requestAnimationFrame(elapsedTimeMillisecond =>
 		actorSystem.update(elapsedTimeMillisecond)

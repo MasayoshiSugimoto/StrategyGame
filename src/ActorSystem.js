@@ -1,4 +1,4 @@
-function ActorSystem() {
+function ActorSystem(_terrain) {
 	const _actors = []
 	let _nextActorId = 0
 
@@ -11,7 +11,7 @@ function ActorSystem() {
 
 	function update(deltaTimeMillisecond) {
 		_actors.forEach(actor => actor.updateBattle(deltaTimeMillisecond))
-		GridRenderer(_actors)
+		GridRenderer(_actors, _terrain)
 	}
 
 	return {createActor, update}
