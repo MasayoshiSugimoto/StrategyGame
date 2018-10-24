@@ -1,3 +1,7 @@
+body {
+	margin: 0px;
+}
+
 .cell {
 	width: 5px;
 	height: 5px;

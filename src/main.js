@@ -21,9 +21,10 @@ function main() {
 	createActor(2)
 	createActor(3)
 
+	const screen = Screen()
+	screen
+			.fullScreen()
+			.setBackgroundColor("black")
 	const intervalMillisecond = 200
-	window.setInterval(() => actorSystem.update(intervalMillisecond), intervalMillisecond)
-//	window.requestAnimationFrame(elapsedTimeMillisecond =>
-//		actorSystem.update(elapsedTimeMillisecond)
-//	)
+	//window.setInterval(() => actorSystem.update(intervalMillisecond), intervalMillisecond)
 }
