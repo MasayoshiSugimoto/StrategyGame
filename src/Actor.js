@@ -1,8 +1,8 @@
 function Actor(_id) {
-	var _healthComponent = EmptyHealthComponent()
-	var _mobilityComponent = EmptyComponent()
-	var _renderComponents = []
-	var _position = Vector(0.0, 0.0)
+	let _healthComponent = EmptyHealthComponent()
+	let _mobilityComponent = EmptyComponent()
+	let _renderComponents = []
+	let _position = Vector(0.0, 0.0)
 
 	function id() { return _id }
 	function getPosition() { return _position }

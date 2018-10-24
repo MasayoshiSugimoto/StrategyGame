@@ -1,7 +1,7 @@
 function Terrain() {
 	
-	const width = () => 100
-	const height = () => 100
+	const width = () => 25
+	const height = () => 25
 
 	return {width, height}
 }

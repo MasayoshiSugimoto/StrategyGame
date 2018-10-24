@@ -1,7 +1,7 @@
 function HealthComponent(hp, maxHP) {
-	var _hp = hp
-	var _maxHP = maxHP
-	var _events = []
+	let _hp = hp
+	let _maxHP = maxHP
+	let _events = []
 
 	function update() {
 		_events.forEach(event => event())

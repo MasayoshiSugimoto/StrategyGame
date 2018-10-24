@@ -1,9 +1,9 @@
-
 function main() {
 	console.log("Starting game...")
 
 	const terrain = Terrain()
 	const actorSystem = ActorSystem(terrain)
+	const worldProjection = WorldProjection()
 
 	const createActor = (targetId) => {
 		let actor = actorSystem.createActor()
@@ -15,7 +15,11 @@ function main() {
 		actor.setMobilityComponent(mobilityComponent)
 		mobilityComponent.setTarget(targetId)
 
-		actor.addRenderComponent(CircleRendererComponent(actor, 10, "white"))
+		actor.addRenderComponent(CircleRendererComponent(actor, 10, "white", worldProjection))
+
+		const healthComponent = HealthComponent(100, 100)
+		actor.setHealthComponent(healthComponent)
+		actor.addRenderComponent(HPBarRendererComponent(actor, healthComponent, worldProjection))
 	}
 	createActor(4)
 	createActor(0)

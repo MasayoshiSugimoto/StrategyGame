@@ -1,19 +1,18 @@
-function CircleRendererComponent(_actor, _radius, _color) {
+function CircleRendererComponent(_actor, _radius, _color, _worldProjection) {
 	function render(canvas) {
 		const startAngle = 0.0
 		const endAngle = 2 * Math.PI
-		const worldFactor = 5
 
 		canvas.save()
 		canvas.fillStyle = _color
+		canvas.beginPath()
 		canvas.arc(
-			_actor.x() * worldFactor,
-			_actor.y() * worldFactor,
+			_worldProjection.meterToPixel(_actor.x()),
+			_worldProjection.meterToPixel(_actor.y()),
 			_radius,
 			startAngle,
 			endAngle 
 		)
-		canvas.closePath()
 		canvas.fill()
 		canvas.restore()
 	}
