@@ -1,7 +1,9 @@
 function Screen() {
 	function setBackgroundColor(color) {
+		_canvas.save()
 		_canvas.fillStyle = color
 		_canvas.fillRect(0, 0, _domElement.width, _domElement.height)
+		_canvas.restore()
 		return _instance
 	}
 

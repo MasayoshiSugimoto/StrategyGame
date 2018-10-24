@@ -18,8 +18,8 @@ function Actor(_id) {
 		_healthComponent.update()
 	}
 
-	function render() {
-		_renderComponents.forEach(component => component.render())
+	function render(canvas) {
+		_renderComponents.forEach(component => component.render(canvas))
 	}
 
 	return {

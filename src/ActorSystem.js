@@ -9,9 +9,9 @@ function ActorSystem(_terrain) {
 		return actor
 	}
 
-	function update(deltaTimeMillisecond) {
+	function update(deltaTimeMillisecond, canvas) {
 		_actors.forEach(actor => actor.updateBattle(deltaTimeMillisecond))
-		GridRenderer(_actors, _terrain)
+		_actors.forEach(actor => actor.render(canvas))
 	}
 
 	function findActor(actorId) {

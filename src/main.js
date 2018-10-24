@@ -14,6 +14,8 @@ function main() {
 		const mobilityComponent = MobilityComponent(actorSystem, actor)
 		actor.setMobilityComponent(mobilityComponent)
 		mobilityComponent.setTarget(targetId)
+
+		actor.addRenderComponent(CircleRendererComponent(actor, 10, "white"))
 	}
 	createActor(4)
 	createActor(0)
@@ -22,9 +24,12 @@ function main() {
 	createActor(3)
 
 	const screen = Screen()
-	screen
-			.fullScreen()
-			.setBackgroundColor("black")
-	const intervalMillisecond = 200
-	//window.setInterval(() => actorSystem.update(intervalMillisecond), intervalMillisecond)
+	const intervalMillisecond = 100
+	const updater = () => {
+		screen
+				.fullScreen()
+				.setBackgroundColor("black")
+		actorSystem.update(intervalMillisecond, screen.canvas())
+	}
+	window.setInterval(updater, intervalMillisecond)
 }
