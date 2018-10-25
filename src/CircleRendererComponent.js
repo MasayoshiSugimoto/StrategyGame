@@ -17,5 +17,7 @@ function CircleRendererComponent(_actor, _radius, _color, _worldProjection) {
 		canvas.restore()
 	}
 
-	return {render}
+	function priority() { return RENDER_PRIORITY.GAME }
+
+	return {render, priority}
 }

@@ -12,14 +12,11 @@ function Actor(_id) {
 	function setHealthComponent(component) { _healthComponent = component }
 	function setMobilityComponent(component) { _mobilityComponent = component }
 	function addRenderComponent(component) { _renderComponents.push(component) }
+	function renderComponents() { return _renderComponents }
 
 	function updateBattle(deltaTimeMillisecond) {
 		_mobilityComponent.update(deltaTimeMillisecond)
 		_healthComponent.update()
-	}
-
-	function render(canvas) {
-		_renderComponents.forEach(component => component.render(canvas))
 	}
 
 	return {
@@ -32,7 +29,7 @@ function Actor(_id) {
 		setMobilityComponent,
 		addRenderComponent,
 		updateBattle,
-		render
+		renderComponents
 	}
 }
 

@@ -11,7 +11,14 @@ function ActorSystem(_terrain) {
 
 	function update(deltaTimeMillisecond, canvas) {
 		_actors.forEach(actor => actor.updateBattle(deltaTimeMillisecond))
-		_actors.forEach(actor => actor.render(canvas))
+
+		const sortByPriority = (renderComponent1, renderComponent2) =>
+				renderComponent2.priority() - renderComponent1.priority()
+		_actors.reduce(
+				(renderComponents, actor) => renderComponents.concat(actor.renderComponents()),
+				[])
+			.sort(sortByPriority)
+			.forEach(renderComponent => renderComponent.render(canvas))
 	}
 
 	function findActor(actorId) {

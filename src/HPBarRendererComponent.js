@@ -14,7 +14,9 @@ function HPBarRendererComponent(_actor, _healthComponent, _worldCoordinates) {
 		canvas.restore()
 	}
 
-	return {render}
+	function priority() { return RENDER_PRIORITY.UI }
+
+	return {render, priority}
 }
 
 HPBarRendererComponent.WIDTH = 25
