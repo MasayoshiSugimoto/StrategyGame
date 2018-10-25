@@ -28,11 +28,14 @@ function main() {
 	createActor(2)
 	createActor(3)
 
+	const terrainRenderer = TerrainRenderer(terrain, worldProjection)
+
 	const screen = Screen()
 	const updater = deltaTimeMillisecond => {
 		screen
 				.fullScreen()
 				.setBackgroundColor("black")
+		terrainRenderer.render(screen.canvas())
 		actorSystem.update(deltaTimeMillisecond, screen.canvas())
 		window.requestAnimationFrame(updater)
 	}
