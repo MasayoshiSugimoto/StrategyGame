@@ -2,7 +2,7 @@ function Actor(_id) {
 	let _healthComponent = EmptyHealthComponent()
 	let _mobilityComponent = EmptyComponent()
 	let _renderComponents = []
-	let _position = Vector(0.0, 0.0)
+	let _position = Vector2D(0.0, 0.0)
 
 	function id() { return _id }
 	function getPosition() { return _position }

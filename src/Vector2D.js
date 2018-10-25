@@ -17,8 +17,6 @@ function Vector2D(_x, _y) {
 		return Vector2D(_x * scalar, _y * scalar)
 	}
 
-	function copy() { return Vector2D(_x, _y) }
-
 	function resize(size) {
 		return scalarMultiply(size / distance())
 	}
@@ -30,8 +28,12 @@ function Vector2D(_x, _y) {
 	}
 
 	function cut(size) {
-		if (distance() > size) return resize(size)
-		return copy()
+		assert(size > 0.0)
+		const length2 = (_x * _x) + (_y * _y)
+		if (length2 > size*size && size > VECTOR_2D_EPSILON) {
+			return resize(size)
+		}
+		return _instance
 	}
 
 	function rotate(angle) {
@@ -66,7 +68,6 @@ function Vector2D(_x, _y) {
 		add,
 		substract,
 		scalarMultiply,
-		copy,
 		resize,
 		normalize,
 		distance,

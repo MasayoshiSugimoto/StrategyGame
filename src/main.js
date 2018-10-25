@@ -9,9 +9,10 @@ function main() {
 		let actor = actorSystem.createActor()
 		const x = Math.floor(Math.random() * terrain.width())
 		const y = Math.floor(Math.random() * terrain.height())
-		actor.setPosition(Vector(x, y))
+		actor.setPosition(Vector2D(x, y))
 
-		const mobilityComponent = MobilityComponent(actorSystem, actor)
+		const velocityMeterPerSecond = 1
+		const mobilityComponent = MobilityComponent(actorSystem, actor, velocityMeterPerSecond)
 		actor.setMobilityComponent(mobilityComponent)
 		mobilityComponent.setTarget(targetId)
 
@@ -28,12 +29,12 @@ function main() {
 	createActor(3)
 
 	const screen = Screen()
-	const intervalMillisecond = 100
-	const updater = () => {
+	const updater = deltaTimeMillisecond => {
 		screen
 				.fullScreen()
 				.setBackgroundColor("black")
-		actorSystem.update(intervalMillisecond, screen.canvas())
+		actorSystem.update(deltaTimeMillisecond, screen.canvas())
+		window.requestAnimationFrame(updater)
 	}
-	window.setInterval(updater, intervalMillisecond)
+	window.requestAnimationFrame(updater)
 }

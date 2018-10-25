@@ -1,4 +1,4 @@
-function MobilityComponent(_actorSystem, _actor) {
+function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond) {
 
 	var _targetId = undefined
 
@@ -6,15 +6,11 @@ function MobilityComponent(_actorSystem, _actor) {
 		const targetActor = _actorSystem.findActor(_targetId)
 		if (targetActor === undefined) return
 
-		var x = 0
-		if (targetActor.x() > _actor.x() + 1) x = 1
-		else if (targetActor.x() < _actor.x() - 1) x = -1
-
-		var y = 0
-		if (targetActor.y() > _actor.y() + 1) y = 1
-		else if (targetActor.y() < _actor.y() - 1) y = -1
-
-		_actor.setPosition(_actor.getPosition().add(Vector(x, y)))
+		const displacement = targetActor
+				.getPosition()
+				.substract(_actor.getPosition())
+				.cut(_velocityMeterPerSecond * deltaTimeMillisecond / 1000.0)
+		_actor.setPosition(_actor.getPosition().add(displacement))
 	}
 
 	function setTarget(actorId) { _targetId = actorId }
