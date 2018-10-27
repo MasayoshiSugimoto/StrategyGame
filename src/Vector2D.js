@@ -1,4 +1,4 @@
-const VECTOR_2D_EPSILON = 0.00001;
+const VECTOR_2D_EPSILON = 0.0001;
 
 function Vector2D(_x, _y) {
 
@@ -27,10 +27,12 @@ function Vector2D(_x, _y) {
 		return Math.sqrt((_x * _x) + (_y * _y))
 	}
 
+	function squareDistance() { return (_x * _x) + (_y * _y) }
+
 	function cut(size) {
-		assert(size > 0.0)
+		assert(size > VECTOR_2D_EPSILON)
 		const length2 = (_x * _x) + (_y * _y)
-		if (length2 > size*size && size > VECTOR_2D_EPSILON) {
+		if (length2 > size*size && length2 > VECTOR_2D_EPSILON) {
 			return resize(size)
 		}
 		return _instance
@@ -38,8 +40,8 @@ function Vector2D(_x, _y) {
 
 	function rotate(angle) {
 		return Vector2D(
-			Math.cos(angle) - _y * Math.sin(angle),
-			Math.sin(angle) + _y * Math.cos(angle)
+			_x * Math.cos(angle) - _y * Math.sin(angle),
+			_x * Math.sin(angle) + _y * Math.cos(angle)
 		)
 	}
 
@@ -62,6 +64,10 @@ function Vector2D(_x, _y) {
 		return Vector2D.distanceBetween(_instance, v)
 	}
 
+	function isZero() {
+		return (_x * _x + _y * _y) < VECTOR_2D_EPSILON
+	}
+
 	const _instance = {
 		x,
 		y,
@@ -71,19 +77,21 @@ function Vector2D(_x, _y) {
 		resize,
 		normalize,
 		distance,
+		squareDistance,
 		cut,
 		rotate,
 		dot,
 		toString,
 		minus,
 		equals,
-		distanceTo
+		distanceTo,
+		isZero
 	}
 
 	return _instance
 }
 
-Vector2D.ZERO = () => Vector2D(0.0, 0.0)
-Vector2D.UNIT_X = () => Vector2D(1.0, 0.0)
-Vector2D.UNIT_Y = () => Vector2D(0.0, 1.0)
+Vector2D.ZERO = Vector2D(0.0, 0.0)
+Vector2D.UNIT_X = Vector2D(1.0, 0.0)
+Vector2D.UNIT_Y = Vector2D(0.0, 1.0)
 Vector2D.distanceBetween = (v1, v2) => v1.substract(v2).distance()

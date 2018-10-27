@@ -1,4 +1,5 @@
 function Screen() {
+
 	function setBackgroundColor(color) {
 		_canvas.save()
 		_canvas.fillStyle = color

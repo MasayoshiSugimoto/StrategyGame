@@ -25,5 +25,7 @@ function ActorSystem(_terrain) {
 		return _actors.find(actor => actor.id() === actorId)
 	}
 
-	return {createActor, update, findActor}
+	function apply(updater) { updater(_actors) }
+
+	return {createActor, update, findActor, apply}
 }
