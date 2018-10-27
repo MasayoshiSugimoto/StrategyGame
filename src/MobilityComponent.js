@@ -1,8 +1,8 @@
-function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terrain) {
+function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terrain, _mouse) {
 
-	var _targetId = undefined
+	let _targetId = undefined
 	const _repulsionVelocityMax = _velocityMeterPerSecond + 0.1
-	const _displacementMin = 0.01
+	const _displacementMin = 0.001
 
 	function update(deltaTimeMillisecond) {
 		const targetActor = _actorSystem.findActor(_targetId)
@@ -13,11 +13,15 @@ function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terra
 				.getRepulsionForce(_actor)
 				.scalarMultiply(deltaTimeSecond * deltaTimeSecond)
 				.cut(_repulsionVelocityMax * deltaTimeSecond)
-		const displacement = targetActor
-				.getPosition()
+		const displacement = Vector2D(_mouse.x(), _mouse.y())
 				.substract(_actor.getPosition())
 				.cut(_velocityMeterPerSecond * deltaTimeSecond)
 				.add(repulsionDisplacement)
+//		const displacement = targetActor
+//				.getPosition()
+//				.substract(_actor.getPosition())
+//				.cut(_velocityMeterPerSecond * deltaTimeSecond)
+//				.add(repulsionDisplacement)
 		_actor.setPosition(_actor.getPosition()
 				.add(displacement.squareDistance() < _displacementMin * _displacementMin
 						? Vector2D.ZERO

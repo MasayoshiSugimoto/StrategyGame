@@ -2,6 +2,7 @@ function main() {
 	console.log("Starting game...")
 
 	const worldProjection = WorldProjection()
+	const mouse = Mouse(worldProjection)
 	const terrain = Terrain(worldProjection)
 	const actorSystem = ActorSystem(terrain)
 
@@ -16,7 +17,8 @@ function main() {
 				actorSystem,
 				actor,
 				velocityMeterPerSecond,
-				terrain)
+				terrain,
+				mouse)
 		actor.setMobilityComponent(mobilityComponent)
 		mobilityComponent.setTarget(targetId)
 
@@ -43,7 +45,7 @@ function main() {
 				.setBackgroundColor("black")
 		actorSystem.apply(terrain.update)
 		terrainRenderer.render(screen.canvas())
-//		terrain.renderForceField(screen.canvas())
+		terrain.renderForceField(screen.canvas())
 		actorSystem.update(deltaTimeMillisecond, screen.canvas())
 		window.requestAnimationFrame(updater)
 	}

@@ -1,7 +1,7 @@
 function Terrain(_worldProjection) {
 
 	const _forceConstant = 100.0
-	const _forceMax = 1000.0
+	const _forceMax = 100000.0
 
 	const _forceField = []
 	for (let x = 0; x < width(); x++) {
