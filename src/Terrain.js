@@ -1,7 +1,7 @@
 function Terrain(_worldProjection) {
 
 	const _forceConstant = 100.0
-	const _forceMax = 10000.0
+	const _forceMax = 1000.0
 
 	const _forceField = []
 	for (let x = 0; x < width(); x++) {
@@ -73,21 +73,21 @@ function Terrain(_worldProjection) {
 	}
 
 	function getRepulsionForce(actor) {
-		let force = Vector2D.ZERO
 
-		let distance2Max = 1.0
+		let distance2Max = 0.0
 		for (let xOffset = 0; xOffset < 2; xOffset++) {
 			for (let yOffset = 0; yOffset < 2; yOffset++) {
 				const cellX = Math.floor(actor.x() - 0.5) + xOffset
 				const cellY = Math.floor(actor.y() - 0.5) + yOffset
 				if (!isValidCellX(cellX) || !isValidCellY(cellY)) continue
-				const distance2 = _voxelCenter[cellX][cellY]
+				distance2Max += _voxelCenter[cellX][cellY]
 						.substract(actor.getPosition())
 						.squareDistance()
-				distance2Max += distance2
 			}
 		}
+		distance2Max = Math.max(distance2Max, 0.1) //Just to be safe
 
+		let force = Vector2D.ZERO
 		for (let xOffset = 0; xOffset < 2; xOffset++) {
 			for (let yOffset = 0; yOffset < 2; yOffset++) {
 				const cellX = Math.floor(actor.x() - 0.5) + xOffset
@@ -102,7 +102,7 @@ function Terrain(_worldProjection) {
 				force = force.add(weightedCellForce)
 			}
 		}
-		return force.cut(_forceMax)
+		return force
 	}
 
 	function getRepulsionForceDeprecated(actor) {

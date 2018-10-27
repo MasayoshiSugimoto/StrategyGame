@@ -11,7 +11,7 @@ function main() {
 		const y = Math.random() * terrain.height()
 		actor.setPosition(Vector2D(x, y))
 
-		const velocityMeterPerSecond = 2.0
+		const velocityMeterPerSecond = 5.0
 		const mobilityComponent = MobilityComponent(
 				actorSystem,
 				actor,
@@ -28,7 +28,7 @@ function main() {
 	}
 	const actorMax = 10
 	for (let i = 0; i < actorMax; i++) {
-		createActor((actorMax+1)%actorMax)
+		createActor((i+1)%actorMax)
 	}
 
 	const terrainRenderer = TerrainRenderer(terrain, worldProjection)
