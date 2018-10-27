@@ -38,18 +38,14 @@ function Terrain(_worldProjection) {
 	function width() { return 25 }
 	function height() { return 25 }
 
-	function calculateForce(actor, cell) {
-		const x = Math.floor(actor.x())
-		const y = Math.floor(actor.y())
-		if (cell.x() < 0 || cell.x() >= width()) return
-		if (cell.y() < 0 || cell.y() >= height()) return
-		const actorToCenter = _voxelCenter[cell.x()][cell.y()]
+	function calculateForce(actor, cellX, cellY) {
+		if (cellX < 0 || cellX >= width()) return Vector2D.ZERO
+		if (cellY < 0 || cellY >= height()) return Vector2D.ZERO
+		const actorToCenter = _voxelCenter[cellX][cellY]
 				.substract(actor.getPosition())
 		const squareDistance = actorToCenter.squareDistance()
-		if (squareDistance < VECTOR_2D_EPSILON) return
-		const force = actorToCenter.scalarMultiply(_forceConstant/squareDistance)
-		_forceField[cell.x()][cell.y()] = _forceField[cell.x()][cell.y()]
-				.add(force)
+		if (squareDistance < VECTOR_2D_EPSILON) return Vector2D.ZERO
+		return actorToCenter.scalarMultiply(_forceConstant/squareDistance)
 	}
 
 	function update(actors) {
@@ -61,19 +57,14 @@ function Terrain(_worldProjection) {
 		}
 
 		actors.forEach(actor => {
-			const x = Math.floor(actor.x())
-			const y = Math.floor(actor.y())
+			const cellX = Math.floor(actor.x())
+			const cellY = Math.floor(actor.y())
 			_areaOfEffect.forEach(v => {
-				const cell = Vector2D(x, y).add(v)
-				if (cell.x() < 0 || cell.x() >= width()) return
-				if (cell.y() < 0 || cell.y() >= height()) return
-				const actorToCenter = _voxelCenter[cell.x()][cell.y()]
-						.substract(actor.getPosition())
-				const squareDistance = actorToCenter.squareDistance()
-				if (squareDistance < VECTOR_2D_EPSILON) return
-				const force = actorToCenter.scalarMultiply(_forceConstant/squareDistance)
-				_forceField[cell.x()][cell.y()] = _forceField[cell.x()][cell.y()]
-						.add(force)
+				const x = cellX + v.x()
+				const y = cellY + v.y()
+				if (x < 0 || x >= width()) return Vector2D.ZERO
+				if (y < 0 || y >= height()) return Vector2D.ZERO
+				_forceField[x][y] = _forceField[x][y].add(calculateForce(actor, x, y))
 			})
 		})
 	}
