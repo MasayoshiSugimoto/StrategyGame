@@ -7,6 +7,7 @@ function drawSegment(canvas, begin, end) {
 
 function drawVector(canvas, begin, end) {
 	const mainVector = begin.substract(end)
+	if (mainVector.isZero()) return
 	const baseVector = mainVector.cut(mainVector.distance() / 3.0)
 	const angle = Math.PI / 6.0
 
