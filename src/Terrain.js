@@ -1,7 +1,8 @@
 function Terrain(_worldProjection) {
 
-	const _forceConstant = 2
+	const _forceConstant = 4
 	const _forceMax = 10.0
+	const _debugVectorFactor = 1
 
 	const _forceField = []
 	for (let x = 0; x < width(); x++) {
@@ -102,7 +103,7 @@ function Terrain(_worldProjection) {
 			begin: _worldProjection.toScreenCoordinates(actor.getPosition()),
 			end: _worldProjection.toScreenCoordinates(actor
 					.getPosition()
-					.add(force))
+					.add(force.scalarMultiply(1/_forceConstant)))
 		})
 		return force
 	}
@@ -122,7 +123,8 @@ function Terrain(_worldProjection) {
 				if (_forceField[x][y].isZero()) continue
 				const begin = _worldProjection.toScreenCoordinates(_voxelCenter[x][y])
 				const force = _forceField[x][y].scalarMultiply(1)
-				const end = _worldProjection.toScreenCoordinates(_voxelCenter[x][y].add(force))
+				const end = _worldProjection.toScreenCoordinates(
+						_voxelCenter[x][y].add(force.scalarMultiply(1/_forceConstant)))
 				drawVector(canvas, begin, end)
 			}
 		}

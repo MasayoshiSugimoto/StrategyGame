@@ -1,8 +1,9 @@
 function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terrain, _mouse) {
 
-	let _targetId = undefined
 	const _repulsionVelocityMax = _velocityMeterPerSecond + 1
 	const _displacementMin = 0.001
+	let _targetId = undefined
+	let _repulsionVelocity = Vector2D(0.0, 0.0)
 
 	function update(deltaTimeMillisecond) {
 		const targetActor = _actorSystem.findActor(_targetId)
@@ -10,14 +11,15 @@ function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terra
 
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 		const forceLimit = 2.0;
-		const repulsionDisplacement = _terrain
-				.getRepulsionForce(_actor)
+		_repulsionVelocity = _repulsionVelocity
+				.add(_terrain.getRepulsionForce(_actor).scalarMultiply(deltaTimeSecond))
 				.cut(_terrain.forceMax())
-				.scalarMultiply(deltaTimeSecond * _velocityMeterPerSecond / forceLimit)
 		const displacement = Vector2D(_mouse.x(), _mouse.y())
 				.substract(_actor.getPosition())
 				.cut(_velocityMeterPerSecond * deltaTimeSecond)
-				.add(repulsionDisplacement)
+				.add(_repulsionVelocity
+						//Guaranty that the repulsion will be greater than the velocity of the mobility
+						.scalarMultiply(deltaTimeSecond * _velocityMeterPerSecond))
 		_actor.setPosition(_actor.getPosition()
 				.add(displacement.squareDistance() < _displacementMin * _displacementMin
 						? Vector2D.ZERO
@@ -29,6 +31,9 @@ function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terra
 			clamp(0.0, position.x(), _terrain.width()),
 			clamp(0.0, position.y(), _terrain.height())
 		))
+
+		const decayFactor = 0.9
+		_repulsionVelocity = _repulsionVelocity.scalarMultiply(decayFactor)
 	}
 
 	function setTarget(actorId) { _targetId = actorId }
