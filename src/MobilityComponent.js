@@ -14,10 +14,6 @@ function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terra
 				.getRepulsionForce(_actor)
 				.cut(_terrain.forceMax())
 				.scalarMultiply(deltaTimeSecond * _velocityMeterPerSecond / forceLimit)
-//		const repulsionDisplacement = _terrain
-//				.getRepulsionForce(_actor)
-//				.scalarMultiply(deltaTimeSecond)
-//				.cut(_repulsionVelocityMax * deltaTimeSecond)
 		const displacement = Vector2D(_mouse.x(), _mouse.y())
 				.substract(_actor.getPosition())
 				.cut(_velocityMeterPerSecond * deltaTimeSecond)
@@ -26,6 +22,13 @@ function MobilityComponent(_actorSystem, _actor, _velocityMeterPerSecond, _terra
 				.add(displacement.squareDistance() < _displacementMin * _displacementMin
 						? Vector2D.ZERO
 						: displacement))
+
+		//Keep inside the field
+		const position = _actor.getPosition()
+		_actor.setPosition(Vector2D(
+			clamp(0.0, position.x(), _terrain.width()),
+			clamp(0.0, position.y(), _terrain.height())
+		))
 	}
 
 	function setTarget(actorId) { _targetId = actorId }

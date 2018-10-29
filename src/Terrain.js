@@ -1,6 +1,6 @@
 function Terrain(_worldProjection) {
 
-	const _forceConstant = 1
+	const _forceConstant = 2
 	const _forceMax = 10.0
 
 	const _forceField = []
@@ -24,8 +24,8 @@ function Terrain(_worldProjection) {
 	function isValidCellX(cellX) { return 0 <= cellX && cellX < width() }
 	function isValidCellY(cellY) { return 0 <= cellY && cellY < height() }
 
-	function width() { return 25 }
-	function height() { return 25 }
+	function width() { return 60 }
+	function height() { return 30 }
 	function forceMax() { return _forceMax }
 
 	function calculateForce(actor, cellX, cellY) {
@@ -36,7 +36,6 @@ function Terrain(_worldProjection) {
 		const squareDistance = actorToCenter.squareDistance()
 		if (squareDistance < VECTOR_2D_EPSILON*VECTOR_2D_EPSILON) {
 			actorToCenter = Vector2D(2 * VECTOR_2D_EPSILON, 0.0)
-					.rotate(Math.random() * Math.PI * 2)
 		}
 		return actorToCenter
 				.scalarMultiply(_forceConstant/squareDistance)
