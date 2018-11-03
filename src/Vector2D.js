@@ -30,7 +30,6 @@ function Vector2D(_x, _y) {
 	function squareDistance() { return (_x * _x) + (_y * _y) }
 
 	function cut(size) {
-		assert(size > VECTOR_2D_EPSILON)
 		const length2 = (_x * _x) + (_y * _y)
 		if (length2 > size*size && length2 > VECTOR_2D_EPSILON) {
 			return resize(size)
@@ -68,6 +67,20 @@ function Vector2D(_x, _y) {
 		return (_x * _x + _y * _y) < VECTOR_2D_EPSILON
 	}
 
+	function min(v) {
+		return Vector2D(
+			Math.min(v.x(), _x),
+			Math.min(v.y(), _y)
+		)
+	}
+
+	function max(v) {
+		return Vector2D(
+			Math.max(v.x(), _x),
+			Math.max(v.y(), _y)
+		)
+	}
+
 	const _instance = {
 		x,
 		y,
@@ -85,7 +98,9 @@ function Vector2D(_x, _y) {
 		minus,
 		equals,
 		distanceTo,
-		isZero
+		isZero,
+		min,
+		max
 	}
 
 	return _instance

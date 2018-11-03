@@ -4,7 +4,12 @@ function main() {
 	const worldProjection = WorldProjection()
 	const mouse = Mouse(worldProjection)
 	const terrain = Terrain(worldProjection)
-	const actorSystem = ActorSystem(terrain)
+	const particleSystem = ParticleSystem(
+		Vector2D(terrain.width(), terrain.height()),
+		1.5,
+		mouse
+	)
+	const actorSystem = ActorSystem(terrain, particleSystem)
 
 	const createActor = (targetId) => {
 		let actor = actorSystem.createActor()
@@ -13,14 +18,14 @@ function main() {
 		actor.setPosition(Vector2D(x, y))
 
 		const velocityMeterPerSecond = 5.0
-		const mobilityComponent = MobilityComponent(
-				actorSystem,
-				actor,
-				velocityMeterPerSecond,
-				terrain,
-				mouse)
-		actor.setMobilityComponent(mobilityComponent)
-		mobilityComponent.setTarget(targetId)
+//		const mobilityComponent = MobilityComponent(
+//				actorSystem,
+//				actor,
+//				velocityMeterPerSecond,
+//				terrain,
+//				mouse)
+//		actor.setMobilityComponent(mobilityComponent)
+//		mobilityComponent.setTarget(targetId)
 
 		actor.addRenderComponent(CircleRendererComponent(actor, 10, "white", worldProjection))
 
@@ -32,6 +37,8 @@ function main() {
 	for (let i = 0; i < actorMax; i++) {
 		createActor((i+1)%actorMax)
 	}
+
+	actorSystem.init()
 
 	const terrainRenderer = TerrainRenderer(terrain, worldProjection)
 
