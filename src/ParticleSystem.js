@@ -12,7 +12,7 @@ function ParticleSystem(_fieldSize, _restLength, _mouse) {
 		const mouse = Vector2D(_mouse.x(), _mouse.y())
 		_particles.forEach(particle => {
 			const particle2Mouse =  mouse.substract(particle._position)
-			particle._acceleration = particle2Mouse.cut(2.0)
+			particle._acceleration = particle2Mouse.cut(5.0)
 		})
 	}
 
@@ -23,7 +23,7 @@ function ParticleSystem(_fieldSize, _restLength, _mouse) {
 				particle._position
 						.substract(particle._oldPosition)
 						.add(particle._acceleration.scalarMultiply(deltaTimeSecond*deltaTimeSecond))
-						.scalarMultiply(0.9))
+						.scalarMultiply(0.95))
 			particle._oldPosition = tmpVector
 		})
 	}
@@ -45,7 +45,6 @@ function ParticleSystem(_fieldSize, _restLength, _mouse) {
 					const delta = particle2._position.substract(particle1._position)
 					const deltaLength = Math.sqrt(delta.dot(delta))
 					if (deltaLength <= VECTOR_2D_EPSILON) {
-						return
 						particle1._position = particle1._position.add(randomVector())
 						particle2._position = particle2._position.add(randomVector())
 					} else if (deltaLength < _restLength) {
