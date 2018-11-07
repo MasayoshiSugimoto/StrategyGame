@@ -13,32 +13,22 @@ function main() {
 
 	const createActor = (targetId) => {
 		let actor = actorSystem.createActor()
+
 		const x = Math.random() * terrain.width()
 		const y = Math.random() * terrain.height()
-		actor.setPosition(Vector2D(x, y))
-
-		const velocityMeterPerSecond = 5.0
-//		const mobilityComponent = MobilityComponent(
-//				actorSystem,
-//				actor,
-//				velocityMeterPerSecond,
-//				terrain,
-//				mouse)
-//		actor.setMobilityComponent(mobilityComponent)
-//		mobilityComponent.setTarget(targetId)
+		particleSystem.createParticle(Vector2D(x, y), actor.id())
 
 		actor.addRenderComponent(CircleRendererComponent(actor, 10, "white", worldProjection))
 
 		const healthComponent = HealthComponent(100, 100)
 		actor.setHealthComponent(healthComponent)
 		actor.addRenderComponent(HPBarRendererComponent(actor, healthComponent, worldProjection))
+
 	}
 	const actorMax = 5
 	for (let i = 0; i < actorMax; i++) {
 		createActor((i+1)%actorMax)
 	}
-
-	actorSystem.init()
 
 	const terrainRenderer = TerrainRenderer(terrain, worldProjection)
 
@@ -50,9 +40,9 @@ function main() {
 		screen
 				.fullScreen()
 				.setBackgroundColor("black")
-		actorSystem.apply(terrain.update)
 		terrainRenderer.render(screen.canvas())
-		terrain.renderForceField(screen.canvas())
+		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
+		particleSystem.update(deltaTimeMillisecond)
 		actorSystem.update(deltaTimeMillisecond, screen.canvas())
 		window.requestAnimationFrame(updater)
 	}

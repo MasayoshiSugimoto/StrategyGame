@@ -9,19 +9,15 @@ function ActorSystem(_terrain, _particleSystem) {
 		return actor
 	}
 
-	function init() {
-		for (let i = 0; i < _actors.length; i++) {
-			_particleSystem.setParticlePosition(i, _actors[i].getPosition())
-		}
-	}
-
 	function update(deltaTimeMillisecond, canvas) {
 		_actors.forEach(actor => actor.updateBattle(deltaTimeMillisecond))
 
-		for (let i = 0; i < _actors.length; i++) {
-			_particleSystem.update(deltaTimeMillisecond)
-			_actors[i].setPosition(_particleSystem.getParticlePosition(i))
-		}
+		const particles = _particleSystem.particlePositions()
+		particles.forEach(particle => {
+			_actors
+					.find(actor => actor.id() === particle.id())
+					.setPosition(particle.position())
+		})
 
 		const sortByPriority = (renderComponent1, renderComponent2) =>
 				renderComponent2.priority() - renderComponent1.priority()
@@ -38,5 +34,5 @@ function ActorSystem(_terrain, _particleSystem) {
 
 	function apply(updater) { updater(_actors) }
 
-	return {createActor, init, update, findActor, apply}
+	return {createActor, update, findActor, apply}
 }

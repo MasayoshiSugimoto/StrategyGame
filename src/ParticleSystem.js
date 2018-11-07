@@ -1,18 +1,21 @@
 function ParticleSystem(_fieldSize, _restLength, _mouse) {
 
-	function Particle(position) {
+	function Particle(_position, _id) {
 		return {
-			_position: position,
-			_oldPosition: position,
-			_acceleration: Vector2D.ZERO
+			_id,
+			_position,
+			_oldPosition: _position,
+			_acceleration: Vector2D.ZERO,
+			_active: true
 		}
 	}
 
 	function applyForces(deltaTimeSecond) {
 		const mouse = Vector2D(_mouse.x(), _mouse.y())
+		const acceleration = 5.0
 		_particles.forEach(particle => {
 			const particle2Mouse =  mouse.substract(particle._position)
-			particle._acceleration = particle2Mouse.cut(5.0)
+			particle._acceleration = particle2Mouse.cut(acceleration)
 		})
 	}
 
@@ -61,23 +64,38 @@ function ParticleSystem(_fieldSize, _restLength, _mouse) {
 
 	function update(deltaTimeMillisecond) {
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
+		clean()
 		applyForces(deltaTimeSecond)
 		verlet(deltaTimeSecond)
 		satisfyConstraints()
 	}
 
-	function getParticlePosition(index) {
-		return _particles[index]._position
+	function createParticle(position, id) {
+		_particles.push(Particle(position, id))
 	}
 
-	function setParticlePosition(index, position) {
-		if (_particles[index] === undefined)
-			_particles[index] = Particle(position)
-		else
-			_particles[index]._position = position
+	function particlePositions() {
+		return _particles.map(particle => ({
+			id: () => particle._id,
+			position: () => particle._position
+		}))
 	}
 
-	const _particles = []
+	function setInactive(id) {
+		const particle = _particles.find(particle => particle._id === id)
+		if (particle !== undefined) particle._active = false
+	}
 
-	return {update, getParticlePosition, setParticlePosition}
+	function clean() {
+		_particles = _particles.filter(particle => particle._active)
+	}
+
+	let _particles = []
+
+	return {
+		update,
+		createParticle,
+		particlePositions,
+		setInactive
+	}
 }
