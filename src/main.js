@@ -32,6 +32,9 @@ function main() {
 
 	const terrainRenderer = TerrainRenderer(terrain, worldProjection)
 
+	const debugWindow = DebugWindow()
+	const frameMonitor = FrameMonitor(debugWindow)
+
 	const screen = Screen()
 	let lastTimeStamp = 0
 	const updater = timeStampMillisecond => {
@@ -44,6 +47,7 @@ function main() {
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 		particleSystem.update(deltaTimeMillisecond)
 		actorSystem.update(deltaTimeMillisecond, screen.canvas())
+		frameMonitor.onFrameDone(deltaTimeMillisecond)
 		window.requestAnimationFrame(updater)
 	}
 	window.requestAnimationFrame(updater)
