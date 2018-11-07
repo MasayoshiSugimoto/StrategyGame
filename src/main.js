@@ -25,7 +25,7 @@ function main() {
 		actor.addRenderComponent(HPBarRendererComponent(actor, healthComponent, worldProjection))
 
 	}
-	const actorMax = 5
+	const actorMax = 20
 	for (let i = 0; i < actorMax; i++) {
 		createActor((i+1)%actorMax)
 	}

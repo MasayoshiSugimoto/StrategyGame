@@ -1,5 +1,8 @@
 function ParticleSystem(_fieldSize, _restLength, _mouse) {
 
+	const CONSTRAINT_ITERATION_NUMBER = 3
+	const ENERGY_CONSERVATION = 0.97
+
 	function Particle(_position, _id) {
 		return {
 			_id,
@@ -12,7 +15,7 @@ function ParticleSystem(_fieldSize, _restLength, _mouse) {
 
 	function applyForces(deltaTimeSecond) {
 		const mouse = Vector2D(_mouse.x(), _mouse.y())
-		const acceleration = 5.0
+		const acceleration = 10.0
 		_particles.forEach(particle => {
 			const particle2Mouse =  mouse.substract(particle._position)
 			particle._acceleration = particle2Mouse.cut(acceleration)
@@ -26,7 +29,7 @@ function ParticleSystem(_fieldSize, _restLength, _mouse) {
 				particle._position
 						.substract(particle._oldPosition)
 						.add(particle._acceleration.scalarMultiply(deltaTimeSecond*deltaTimeSecond))
-						.scalarMultiply(0.95))
+						.scalarMultiply(ENERGY_CONSERVATION))
 			particle._oldPosition = tmpVector
 		})
 	}
@@ -37,7 +40,7 @@ function ParticleSystem(_fieldSize, _restLength, _mouse) {
 		const randomVector = () =>
 				Vector2D(Math.random() * minDistance, Math.random() * minDistance)
 
-		for (let i = 0; i < 1; i++) {
+		for (let i = 0; i < CONSTRAINT_ITERATION_NUMBER; i++) {
 			_particles.forEach(particle1 => {
 				particle1._position = particle1._position
 						.max(Vector2D.ZERO)
