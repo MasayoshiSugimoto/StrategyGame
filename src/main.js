@@ -3,7 +3,7 @@ function main() {
 
 	const worldProjection = WorldProjection()
 	const mouse = Mouse(worldProjection)
-	const terrain = Terrain(worldProjection)
+	const terrain = Terrain(worldProjection, TERRAIN_DATA)
 	const particleSystem = ParticleSystem(
 		Vector2D(terrain.width(), terrain.height()),
 		1.5,

@@ -1,6 +1,6 @@
 function ParticleSystem(_fieldSize, _restLength, _mouse) {
 
-	const CONSTRAINT_ITERATION_NUMBER = 3
+	const CONSTRAINT_ITERATION_NUMBER = 1
 	const ENERGY_CONSERVATION = 0.97
 
 	function Particle(_position, _id) {

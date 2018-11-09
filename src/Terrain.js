@@ -1,4 +1,4 @@
-function Terrain(_worldProjection) {
+function Terrain(_worldProjection, _terrainData) {
 
 	const _forceConstant = 4
 	const _forceMax = 10.0
@@ -22,6 +22,19 @@ function Terrain(_worldProjection) {
 
 	let _debugRepulsions = []
 
+	const _isTraversable = []
+	{
+		let lines = _terrainData.split("\n")
+		//Remove first and last line
+		lines = lines.splice(1, lines.length-2)
+		for (let x = 0; x < width(); x++) {
+			_isTraversable[x] = []
+			for (let y = 0; y < height(); y++) {
+				_isTraversable[x][y] = lines[y][x] === '0'	
+			}
+		}
+	}
+	
 	function isValidCellX(cellX) { return 0 <= cellX && cellX < width() }
 	function isValidCellY(cellY) { return 0 <= cellY && cellY < height() }
 
@@ -139,12 +152,26 @@ function Terrain(_worldProjection) {
 		_debugRepulsions = []
 	}
 
+	function isTraversable(cell) {
+		return _isTraversable[cell.x()][cell.y()]
+	}
+
+	function forTraversable(f) {
+		for (let x = 0; x < _isTraversable.length; x++) {
+			for (let y = 0; y < _isTraversable[x].length; y++) {
+				f(x, y, _isTraversable[x][y])
+			}
+		}
+	}
+
 	return {
 		width,
 		height,
 		forceMax,
 		update,
 		getRepulsionForce,
-		renderForceField
+		renderForceField,
+		isTraversable,
+		forTraversable
 	}
 }

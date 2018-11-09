@@ -1,8 +1,11 @@
 function TerrainRenderer(_terrain, _worldProjection) {
 
+	const CELL_SIZE = WorldProjection.PIXELS_PER_METER * 1
+
 	function render(canvas) {
 		canvas.save()
 		canvas.strokeStyle = "white"
+		canvas.fillStyle = "white"
 		const left = 0.0
 		const top = 0.0
 		const right = _worldProjection.meterToPixel(_terrain.width())
@@ -22,6 +25,10 @@ function TerrainRenderer(_terrain, _worldProjection) {
 			canvas.lineTo(right, screenY)
 			canvas.stroke()
 		}
+		_terrain.forTraversable((x, y, isTraversable) => {
+			if (isTraversable) return
+			canvas.fillRect(x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE, CELL_SIZE)
+		})
 		canvas.restore()
 	}
 
