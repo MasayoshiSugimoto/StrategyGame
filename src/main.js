@@ -5,7 +5,7 @@ function main() {
 	const mouse = Mouse(worldProjection)
 	const terrain = Terrain(worldProjection, TERRAIN_DATA)
 	const particleSystem = ParticleSystem(
-		Vector2D(terrain.width(), terrain.height()),
+		terrain,
 		1.5,
 		mouse
 	)
@@ -25,7 +25,7 @@ function main() {
 		actor.addRenderComponent(HPBarRendererComponent(actor, healthComponent, worldProjection))
 
 	}
-	const actorMax = 20
+	const actorMax = 1
 	for (let i = 0; i < actorMax; i++) {
 		createActor((i+1)%actorMax)
 	}
@@ -43,12 +43,24 @@ function main() {
 		screen
 				.fullScreen()
 				.setBackgroundColor("black")
-		terrainRenderer.render(screen.canvas())
+		//terrainRenderer.render(screen.canvas())
+		Terrain.renderCollisionData(
+				screen.canvas(),
+				worldProjection,
+				Terrain.optimizeCollisionData(Terrain.string2Data(`
+000000000000000
+010001111100000
+000001111100000
+000001111100000
+000000000000000
+000000000011111
+000000000011111
+`)))
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 		particleSystem.update(deltaTimeMillisecond)
-		actorSystem.update(deltaTimeMillisecond, screen.canvas())
+		//actorSystem.update(deltaTimeMillisecond, screen.canvas())
 		frameMonitor.onFrameDone(deltaTimeMillisecond)
-		window.requestAnimationFrame(updater)
+		//window.requestAnimationFrame(updater)
 	}
 	window.requestAnimationFrame(updater)
 }

@@ -81,6 +81,10 @@ function Vector2D(_x, _y) {
 		)
 	}
 
+	function map(f) {
+		return Vector2D(f(_x), f(_y))
+	}
+
 	const _instance = {
 		x,
 		y,
@@ -100,7 +104,8 @@ function Vector2D(_x, _y) {
 		distanceTo,
 		isZero,
 		min,
-		max
+		max,
+		map
 	}
 
 	return _instance

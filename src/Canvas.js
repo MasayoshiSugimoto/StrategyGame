@@ -28,4 +28,3 @@ function drawVector(canvas, begin, end) {
 
 	canvas.stroke()
 }
-	

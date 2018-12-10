@@ -25,7 +25,7 @@ function TerrainRenderer(_terrain, _worldProjection) {
 			canvas.lineTo(right, screenY)
 			canvas.stroke()
 		}
-		_terrain.forTraversable((x, y, isTraversable) => {
+		_terrain.forWalls((x, y, isTraversable) => {
 			if (isTraversable) return
 			canvas.fillRect(x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE, CELL_SIZE)
 		})
