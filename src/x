@@ -1,5 +1,0 @@
-Terrain.optimizeCollisionData(Terrain.string2Data(`
-0000
-0110
-0000
-`))
