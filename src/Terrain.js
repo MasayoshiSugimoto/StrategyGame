@@ -339,18 +339,3 @@ Terrain.optimizeCollisionData = terrainData => {
 	return collisionRectangles
 }
 
-Terrain.renderCollisionData = (canvas, worldProjection, collisionData) => {
-	canvas.save()
-	canvas.strokeStyle = "green"
-	canvas.fillStyle = "white"
-
-	collisionData
-		.map(worldProjection.projectRectangleToScreen)
-		.forEach(rectangle => {
-			canvas.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height)
-			//canvas.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height)
-		})
-
-	canvas.restore()
-}
-

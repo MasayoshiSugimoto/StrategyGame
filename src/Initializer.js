@@ -16,10 +16,21 @@ function Initializer() {
 	const worldProjection = makeLazy(() => WorldProjection())
 	const mouse = makeLazy(() => Mouse(worldProjection()))
 	const terrain = makeLazy(() => Terrain(worldProjection(), TERRAIN_DATA))
+	const screen = makeLazy(() => Screen())
+
+	const collisionRectangles = makeLazy(() =>
+		Terrain.optimizeCollisionData(Terrain.string2Data(TERRAIN_DATA))
+	)
 
 	//Debug
 	const frameMonitor = makeLazy(() => FrameMonitor(debugWindow()))
 	const debugWindow = makeLazy(() => DebugWindow())
+
+	const collisionRenderer = makeLazy(() => CollisionRenderer(
+		screen().canvas(),
+		worldProjection(),
+		collisionRectangles()
+	))
 
 	return {
 		worldProjection: worldProjection(),
@@ -29,6 +40,8 @@ function Initializer() {
 		actorSystem: actorSystem(),
 		terrainRenderer: terrainRenderer(),
 		frameMonitor: frameMonitor(),
+		screen: screen(),
+		collisionRenderer: collisionRenderer(),
 	}
 
 }

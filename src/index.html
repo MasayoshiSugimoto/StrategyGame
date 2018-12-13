@@ -12,6 +12,7 @@
 	<script src="DebugWindow.js"></script>
 	<script src="EmptyHealthComponent.js"></script>
 	<script src="FrameMonitor.js"></script>
+	<script src="Debug/CollisionRenderer.js"></script>
 	<script src="GridRenderer.js"></script>
 	<script src="HPBarRendererComponent.js"></script>
 	<script src="HealthComponent.js"></script>
@@ -35,7 +36,12 @@
 
 <body onload="main()">
 	<canvas id="screen"></canvas>
-	<div id="debug"></div>
+	<section id="debug">
+		<div>
+			<input type="checkbox" id="collision_data_view_checkbox"/>
+			<label for="collision_data_view_checkbox">Collision Data</label>
+		</div>
+	</section>
 </body>
 
 </html>

@@ -32,32 +32,32 @@ function main() {
 		createActor((i+1)%actorMax)
 	}
 
-	const screen = Screen()
 	let lastTimeStamp = 0
 	const updater = timeStampMillisecond => {
 		const deltaTimeMillisecond = timeStampMillisecond - lastTimeStamp
 		lastTimeStamp = timeStampMillisecond
-		screen
+		initializer.screen
 				.fullScreen()
 				.setBackgroundColor("black")
-		//initializer.terrainRenderer.render(screen.canvas())
-		Terrain.renderCollisionData(
-				screen.canvas(),
-				initializer.worldProjection,
-				Terrain.optimizeCollisionData(Terrain.string2Data(`
-000000000000000
-010001111100010
-011000111100110
-011100001101110
-011000011100110
-010001111111111
-000000000011111
-`)))
+		initializer.terrainRenderer.render(initializer.screen.canvas())
+		initializer.collisionRenderer.render()
+//		Terrain.renderCollisionData(
+//				initializer.screen.canvas(),
+//				initializer.worldProjection,
+//				Terrain.optimizeCollisionData(Terrain.string2Data(`
+//000000000000000
+//010001111100010
+//011000111100110
+//011100001101110
+//011000011100110
+//010001111111111
+//000000000011111
+//`)))
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 		initializer.particleSystem.update(deltaTimeMillisecond)
-		//initializer.actorSystem.update(deltaTimeMillisecond, screen.canvas())
+		initializer.actorSystem.update(deltaTimeMillisecond, initializer.screen.canvas())
 		initializer.frameMonitor.onFrameDone(deltaTimeMillisecond)
-		//window.requestAnimationFrame(updater)
+		window.requestAnimationFrame(updater)
 	}
 	window.requestAnimationFrame(updater)
 }
