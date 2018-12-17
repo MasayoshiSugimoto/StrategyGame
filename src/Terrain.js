@@ -39,61 +39,6 @@ function Terrain(_worldProjection, _terrainData) {
 		}
 	}
 
-//	const _collisionRectangles = []
-//	{
-//		const coveredByRectangle = []
-//		for (let x = 0; x < width()+2; x++) {
-//			coveredByRectangle[x] = []
-//			for (let y = 0; y < height()+2; y++) {
-//				coveredByRectangle[x][y] = false
-//			}
-//		}
-//		const isCovered = (x, y) => coveredByRectangle[x+1][y+1]
-//
-//		const addRectangle = rectangle => {
-//			for (let x = rectangle.x; x < x+rectangle.width; x++) {
-//				for (let y = rectangle.y; y < y+rectangle.height; y++) {
-//					coveredByRectangle[x+1][y+1] = true
-//				}
-//			}
-//			_collisionRectangles.push(rectangle)
-//		}
-//
-//		for (let x = -1; x <= width(); x++) {
-//			for (let y = -1; y <= height(); y++) {
-//				if (!isWall(x, y)) continue
-//				const findBiggerRectangle(currentX, currentY, isXNext) => {
-//					let nextX = x+1
-//					let nextY = y
-//					let end = Math.min(currentY-y, height())
-//					if (!isXNext) {
-//						nextX = x
-//						nextY = y+1
-//						end = Math.min(currentX-x, width())
-//					}
-//					for (let offset = 0; offset <= end; offset++) {
-//						//Check column or line is also a wall
-//						const tmpX = nextX + (!isXNext ? offset : 0)
-//						const tmpY = nextY + (isXNext ? offset : 0)) 
-//						if (!isValidCellX(tmpX) || !isValidCellY(tmpY) || !isWall(tmpX, tmpY) {
-//							return Rectangle(x, y, currentX-x+1, currentY-y+1)
-//						}
-//					}
-//					return findBiggerRectangle(nextX, nextY, !isXNext)
-//				}
-//				//We need some overlapping between rectangles
-//				if (!isCovered(x, y)
-//						|| (isCovered(x, y) && !isCovered(x+1, y))) {
-//					addRectangle(findBiggerRectangle(x, y, true))
-//				}
-//				if (!isCovered(x, y)
-//						|| (isCovered(x, y) && !isCovered(x, y+1))) {
-//					addRectangle(findBiggerRectangle(x, y, false))
-//				}
-//			}
-//		}
-//	}
-	
 	function isValidCellX(cellX) { return 0 <= cellX && cellX < width() }
 	function isValidCellY(cellY) { return 0 <= cellY && cellY < height() }
 
@@ -296,6 +241,8 @@ Terrain.optimizeCollisionData = terrainData => {
 
 	const collisionRectangles = []
 	const xStart = new Array(height).fill(-1)
+	const makeRectangle = (x, y, width, height) =>
+		Rectangle(x-2, y-2, width, height)
 
 	for (let x = 1; x < width-1; x++) {
 		const endRectangle = new Array(height).fill(false)
@@ -324,7 +271,7 @@ Terrain.optimizeCollisionData = terrainData => {
 						}
 					}
 					if (isRectangeEnd) {
-						collisionRectangles.push(Rectangle(
+						collisionRectangles.push(makeRectangle(
 								rectXStart,
 								rectYStart,
 								x-rectXStart+1,
