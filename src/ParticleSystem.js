@@ -1,4 +1,4 @@
-function ParticleSystem(_terrain, _restLength, _mouse) {
+function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 
 	const CONSTRAINT_ITERATION_NUMBER = 1
 	const ENERGY_CONSERVATION = 0.97
@@ -36,59 +36,32 @@ function ParticleSystem(_terrain, _restLength, _mouse) {
 	}
 
 	function applyTerrainCollision(particle) {
-		//Apply collision
-		const cellSize = _terrain.cellSize()
-		const cell = particle._position
-			.map(d => Math.floor(d) * cellSize)
-
-		if (_terrain.isTraversable(cell)) return
-
-		const collisionEdges = {x: NaN, y: NaN}
-		{//Find the possible edges involved in the collision
-			const oldX = particle._oldPosition.x()
-			if (oldX <= cell.x()) {
-				collisionEdges.x = cell.x()
-			} else if (oldX > cell.x() + cellSize) {
-				collisionEdges.x = cell.x() + cellSize
-			}
-			const oldY = particle._oldPosition.y()
-			if (oldY <= cell.y()) {
-				collisionEdges.y = cell.y()
-			} else if (oldY > cell.y() + cellSize) {
-				collisionEdges.y = cell.y() + cellSize
-			}
-		}
-
-		//Calculate the colliding edge (Using Affine transformation)
 		const x = particle._position.x()
 		const y = particle._position.y()
-		const deltaPosition = particle._position
-			.substract(particle._oldPosition)
-		const lambdaY = (collisionEdges.y - particle._oldPosition.y()) / y
-		const impactX = particle._oldPosition
-				.add(deltaPosition.scalarMultiply(lambdaY))
-				.x()
-		const lambdaX = (collisionEdges.x - particle._oldPosition.x()) / x
-		const impactY = particle._oldPosition
-				.add(deltaPosition.scalarMultiply(lambdaX))
-				.y()
-		if (!isNaN(impactX) 
-				&& !isNaN(collisionEdges.y)
-				&& impactX >= cell.x()
-				&& impactX <= cell.x() + cellSize
-				&& (deltaPosition.y() > 0
-						? !_terrain.isWall(cell.x(), cell.y()-1)
-						: !_terrain.isWall(cell.x(), cell.y()+1))) {
-			particle._position = Vector2D(x, collisionEdges.y)
-		} else if (!isNaN(impactY)
-				&& !isNaN(collisionEdges.x)
-				&& impactY >= cell.y()
-				&& impactY <= cell.y() + cellSize
-				&& (deltaPosition.x() >= 0
-						? !_terrain.isWall(cell.x()-1, cell.y())
-						: !_terrain.isWall(cell.x()+1, cell.y()))) {
-			particle._position = Vector2D(collisionEdges.x, y)
-		}
+
+		_collisionRectangles.forEach(rectangle => {
+			const top = rectangle.y
+			const bottom = rectangle.y+rectangle.height
+			const left = rectangle.x
+			const right = rectangle.x+rectangle.width
+			const centerX = left+rectangle.width/2.0
+			const centerY = top+rectangle.height/2.0
+
+			if (left < x && x < right && top < y && y < bottom) {
+				[
+					{diff: x-left, f: () => particle._position = new Vector2D(left, y)},
+					{diff: right-x, f: () => particle._position = new Vector2D(right, y)},
+					{diff: y-top, f: () => particle._position = new Vector2D(x, top)},
+					{diff: bottom-y, f: () => particle._position = new Vector2D(x, bottom)}
+				]
+				.reduce((selectedEffect, effect) => {
+						return effect.diff < selectedEffect.diff
+								? effect
+								: selectedEffect
+					}, {diff: Number.MAX_VALUE, f: () => {}})
+				.f()
+			}
+		})
 	}
 
 	function satisfyConstraints() {
