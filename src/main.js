@@ -36,23 +36,9 @@ function main() {
 	const updater = timeStampMillisecond => {
 		const deltaTimeMillisecond = timeStampMillisecond - lastTimeStamp
 		lastTimeStamp = timeStampMillisecond
-		initializer.screen
-				.fullScreen()
-				.setBackgroundColor("black")
+		initializer.screen.reset()
 		initializer.terrainRenderer.render(initializer.screen.canvas())
 		initializer.collisionRenderer.render()
-//		Terrain.renderCollisionData(
-//				initializer.screen.canvas(),
-//				initializer.worldProjection,
-//				Terrain.optimizeCollisionData(Terrain.string2Data(`
-//000000000000000
-//010001111100010
-//011000111100110
-//011100001101110
-//011000011100110
-//010001111111111
-//000000000011111
-//`)))
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 		initializer.particleSystem.update(deltaTimeMillisecond)
 		initializer.actorSystem.update(deltaTimeMillisecond, initializer.screen.canvas())

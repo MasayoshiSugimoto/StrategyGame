@@ -16,13 +16,19 @@ function Screen() {
 
 	function canvas() { return _canvas }
 
+	function reset() {
+		fullScreen()
+		setBackgroundColor("black")
+	}
+
 	const _domElement = document.getElementById("screen")
 	const _canvas = _domElement.getContext("2d")
 
 	const _instance = {
 		setBackgroundColor,
 		fullScreen,
-		canvas
+		canvas,
+		reset
 	}
 
 	return _instance
