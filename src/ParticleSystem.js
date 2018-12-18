@@ -36,10 +36,10 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 	}
 
 	function applyTerrainCollision(particle) {
-		const x = particle._position.x()
-		const y = particle._position.y()
-
 		_collisionRectangles.forEach(rectangle => {
+			const x = particle._position.x()
+			const y = particle._position.y()
+
 			const top = rectangle.y
 			const bottom = rectangle.y+rectangle.height
 			const left = rectangle.x

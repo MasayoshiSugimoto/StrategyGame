@@ -27,7 +27,7 @@ function main() {
 
 	}
 
-	const actorMax = 1
+	const actorMax = 10
 	for (let i = 0; i < actorMax; i++) {
 		createActor((i+1)%actorMax)
 	}
