@@ -3,33 +3,9 @@ function main() {
 
 	const initializer = Initializer()
 
-	const createActor = (targetId) => {
-		let actor = initializer.actorSystem.createActor()
-
-		const x = Math.random() * initializer.terrain.width()
-		const y = Math.random() * initializer.terrain.height()
-		initializer.particleSystem.createParticle(Vector2D(x, y), actor.id())
-
-		actor.addRenderComponent(CircleRendererComponent(
-			actor,
-			10,
-			"white",
-			initializer.worldProjection
-		))
-
-		const healthComponent = HealthComponent(100, 100)
-		actor.setHealthComponent(healthComponent)
-		actor.addRenderComponent(HPBarRendererComponent(
-			actor,
-			healthComponent,
-			initializer.worldProjection
-		))
-
-	}
-
 	const actorMax = 10
 	for (let i = 0; i < actorMax; i++) {
-		createActor((i+1)%actorMax)
+		initializer.createActor()
 	}
 
 	let lastTimeStamp = 0

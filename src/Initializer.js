@@ -28,6 +28,13 @@ function Initializer() {
 		Terrain.optimizeCollisionData(Terrain.string2Data(TERRAIN_DATA))
 	)
 
+	const createActor = makeLazy(() => ActorFactory(
+		actorSystem(),
+		terrain(),
+		particleSystem(),
+		worldProjection()
+	))
+
 	//Debug
 	const frameMonitor = makeLazy(() => FrameMonitor(debugWindow()))
 	const debugWindow = makeLazy(() => DebugWindow())
@@ -48,6 +55,7 @@ function Initializer() {
 		frameMonitor: frameMonitor(),
 		screen: screen(),
 		collisionRenderer: collisionRenderer(),
+		createActor: createActor(),
 	}
 
 }
