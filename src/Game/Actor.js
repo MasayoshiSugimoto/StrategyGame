@@ -10,9 +10,6 @@ function Actor(_id) {
 	function addRenderComponent(component) { _renderComponents.push(component) }
 	function renderComponents() { return _renderComponents }
 
-	function updateBattle(deltaTimeMillisecond) {
-	}
-
 	return {
 		id,
 		getPosition,
@@ -20,7 +17,6 @@ function Actor(_id) {
 		x,
 		y,
 		addRenderComponent,
-		updateBattle,
 		renderComponents
 	}
 }

@@ -10,8 +10,6 @@ function ActorSystem(_terrain, _particleSystem, _canvas) {
 	}
 
 	function update(deltaTimeMillisecond) {
-		_actors.forEach(actor => actor.updateBattle(deltaTimeMillisecond))
-
 		const particles = _particleSystem.particlePositions()
 		particles.forEach(particle => {
 			_actors
