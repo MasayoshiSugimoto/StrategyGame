@@ -3,8 +3,7 @@ function main() {
 
 	const initializer = Initializer()
 
-	const actorMax = 10
-	for (let i = 0; i < actorMax; i++) {
+	for (let i = 0; i < 10; i++) {
 		initializer.createActor()
 	}
 
