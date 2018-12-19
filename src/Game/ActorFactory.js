@@ -12,14 +12,6 @@ function ActorFactory(actorSystem, terrain, particleSystem, worldProjection) {
 			"white",
 			worldProjection
 		))
-
-		const healthComponent = HealthComponent(100, 100)
-		actor.setHealthComponent(healthComponent)
-		actor.addRenderComponent(HPBarRendererComponent(
-			actor,
-			healthComponent,
-			worldProjection
-		))
 		
 		return actor
 	}
