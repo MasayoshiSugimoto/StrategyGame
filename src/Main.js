@@ -11,10 +11,9 @@ function main() {
 	const updater = timeStampMillisecond => {
 		const deltaTimeMillisecond = timeStampMillisecond - lastTimeStamp
 		lastTimeStamp = timeStampMillisecond
-		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 
 		initializer.screen.reset()
-		initializer.terrainRenderer.render(initializer.screen.canvas())
+		initializer.terrainRenderer.render()
 		initializer.collisionRenderer.render()
 		initializer.particleSystem.update(deltaTimeMillisecond)
 		initializer.actorSystem.update(deltaTimeMillisecond, initializer.screen.canvas())

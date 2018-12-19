@@ -18,7 +18,13 @@ function Initializer() {
 	)
 
 	const actorSystem = makeLazy(() => ActorSystem(terrain(), particleSystem()))
-	const terrainRenderer = makeLazy(() => TerrainRenderer(terrain(), worldProjection()))
+
+	const terrainRenderer = makeLazy(() => TerrainRenderer(
+		terrain(),
+		worldProjection(),
+		screen().canvas())
+	)
+
 	const worldProjection = makeLazy(() => WorldProjection())
 	const mouse = makeLazy(() => Mouse(worldProjection()))
 	const terrain = makeLazy(() => Terrain(worldProjection(), TERRAIN_DATA))
