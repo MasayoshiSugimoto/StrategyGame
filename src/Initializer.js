@@ -17,7 +17,11 @@ function Initializer() {
 		collisionRectangles())
 	)
 
-	const actorSystem = makeLazy(() => ActorSystem(terrain(), particleSystem()))
+	const actorSystem = makeLazy(() => ActorSystem(
+		terrain(),
+		particleSystem(),
+		screen().canvas()
+	))
 
 	const terrainRenderer = makeLazy(() => TerrainRenderer(
 		terrain(),

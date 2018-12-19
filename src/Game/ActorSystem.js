@@ -1,4 +1,4 @@
-function ActorSystem(_terrain, _particleSystem) {
+function ActorSystem(_terrain, _particleSystem, _canvas) {
 	const _actors = []
 	let _nextActorId = 0
 
@@ -9,7 +9,7 @@ function ActorSystem(_terrain, _particleSystem) {
 		return actor
 	}
 
-	function update(deltaTimeMillisecond, canvas) {
+	function update(deltaTimeMillisecond) {
 		_actors.forEach(actor => actor.updateBattle(deltaTimeMillisecond))
 
 		const particles = _particleSystem.particlePositions()
@@ -25,7 +25,7 @@ function ActorSystem(_terrain, _particleSystem) {
 				(renderComponents, actor) => renderComponents.concat(actor.renderComponents()),
 				[])
 			.sort(sortByPriority)
-			.forEach(renderComponent => renderComponent.render(canvas))
+			.forEach(renderComponent => renderComponent.render(_canvas))
 	}
 
 	function findActor(actorId) {

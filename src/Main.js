@@ -16,7 +16,7 @@ function main() {
 		initializer.terrainRenderer.render()
 		initializer.collisionRenderer.render()
 		initializer.particleSystem.update(deltaTimeMillisecond)
-		initializer.actorSystem.update(deltaTimeMillisecond, initializer.screen.canvas())
+		initializer.actorSystem.update(deltaTimeMillisecond)
 		initializer.frameMonitor.onFrameDone(deltaTimeMillisecond)
 		window.requestAnimationFrame(updater)
 	}
