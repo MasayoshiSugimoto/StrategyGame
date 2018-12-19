@@ -12,10 +12,10 @@ function main() {
 		const deltaTimeMillisecond = timeStampMillisecond - lastTimeStamp
 		lastTimeStamp = timeStampMillisecond
 
+		initializer.particleSystem.update(deltaTimeMillisecond)
 		initializer.screen.reset()
 		initializer.terrainRenderer.render()
 		initializer.collisionRenderer.render()
-		initializer.particleSystem.update(deltaTimeMillisecond)
 		initializer.actorSystem.update(deltaTimeMillisecond)
 		initializer.frameMonitor.onFrameDone(deltaTimeMillisecond)
 		window.requestAnimationFrame(updater)
