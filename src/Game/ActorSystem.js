@@ -22,9 +22,7 @@ function ActorSystem(_particleSystem, _canvas) {
 		return _actors.find(actor => actor.id() === actorId)
 	}
 
-	function apply(updater) { updater(_actors) }
-
 	function getActors() { return _actors }
 
-	return {createActor, update, findActor, apply, getActors}
+	return {createActor, update, findActor, getActors}
 }
