@@ -1,14 +1,20 @@
 function Actor(_id) {
-	let _renderComponents = []
 	let _position = Vector2D(0.0, 0.0)
+	const _components = []
 
 	function id() { return _id }
 	function getPosition() { return _position }
 	function setPosition(position) { _position = position }
 	function x() { return _position.x() }
 	function y() { return _position.y() }
-	function addRenderComponent(component) { _renderComponents.push(component) }
-	function renderComponents() { return _renderComponents }
+
+	function addComponent(componentId, component) {
+		_components[componentId] = component
+	}
+
+	function getComponent(componentId) {
+		return _components[componentId]
+	}
 
 	return {
 		id,
@@ -16,7 +22,7 @@ function Actor(_id) {
 		setPosition,
 		x,
 		y,
-		addRenderComponent,
-		renderComponents
+		addComponent,
+		getComponent
 	}
 }

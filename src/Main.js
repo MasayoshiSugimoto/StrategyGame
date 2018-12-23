@@ -12,12 +12,17 @@ function main() {
 		const deltaTimeMillisecond = timeStampMillisecond - lastTimeStamp
 		lastTimeStamp = timeStampMillisecond
 
+		//Game update
 		initializer.particleSystem.update(deltaTimeMillisecond)
+		initializer.actorSystem.update(deltaTimeMillisecond)
+
+		//Rendering
 		initializer.screen.reset()
 		initializer.terrainRenderer.render()
 		initializer.collisionRenderer.render()
-		initializer.actorSystem.update(deltaTimeMillisecond)
+		renderCircleComponents(initializer.actorSystem.getActors(), initializer.screen.canvas())
 		initializer.frameMonitor.onFrameDone(deltaTimeMillisecond)
+		
 		window.requestAnimationFrame(updater)
 	}
 	window.requestAnimationFrame(updater)

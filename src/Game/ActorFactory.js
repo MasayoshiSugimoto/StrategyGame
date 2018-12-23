@@ -6,7 +6,7 @@ function ActorFactory(actorSystem, terrain, particleSystem, worldProjection) {
 		const y = Math.random() * terrain.height()
 		particleSystem.createParticle(Vector2D(x, y), actor.id())
 
-		actor.addRenderComponent(CircleRendererComponent(
+		actor.addComponent(ActorComponentId.CIRCLE_RENDERER, CircleRendererComponent(
 			actor,
 			10,
 			"white",
