@@ -14,7 +14,7 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 		}
 	}
 
-	function applyForces(deltaTimeSecond) {
+	function applyForces() {
 		const mouse = Vector2D(_mouse.x(), _mouse.y())
 		const acceleration = 10.0
 		_particles.forEach(particle => {
@@ -44,8 +44,6 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 			const bottom = rectangle.y+rectangle.height
 			const left = rectangle.x
 			const right = rectangle.x+rectangle.width
-			const centerX = left+rectangle.width/2.0
-			const centerY = top+rectangle.height/2.0
 
 			if (left < x && x < right && top < y && y < bottom) {
 				[
@@ -66,7 +64,6 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 
 	function satisfyConstraints() {
 		const minDistance = 2 * VECTOR_2D_EPSILON
-		const cellSize = _terrain.cellSize()
 
 		const randomVector = () =>
 				Vector2D(Math.random() * minDistance, Math.random() * minDistance)
@@ -103,7 +100,7 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 	function update(deltaTimeMillisecond) {
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 		clean()
-		applyForces(deltaTimeSecond)
+		applyForces()
 		verlet(deltaTimeSecond)
 		satisfyConstraints()
 	}
