@@ -9,7 +9,7 @@ function ActorSystem(_particleSystem, _canvas) {
 		return actor
 	}
 
-	function update(deltaTimeMillisecond) {
+	function update() {
 		const particles = _particleSystem.particlePositions()
 		particles.forEach(particle => {
 			_actors

@@ -14,7 +14,7 @@ function main() {
 
 		//Game update
 		initializer.particleSystem.update(deltaTimeMillisecond)
-		initializer.actorSystem.update(deltaTimeMillisecond)
+		initializer.actorSystem.update()
 
 		//Rendering
 		initializer.screen.reset()
@@ -22,7 +22,7 @@ function main() {
 		initializer.collisionRenderer.render()
 		renderCircleComponents(initializer.actorSystem.getActors(), initializer.screen.canvas())
 		initializer.frameMonitor.onFrameDone(deltaTimeMillisecond)
-		
+
 		window.requestAnimationFrame(updater)
 	}
 	window.requestAnimationFrame(updater)
