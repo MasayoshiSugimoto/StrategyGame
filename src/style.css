@@ -14,3 +14,14 @@ body {
 	top: 10px;
 	right: 10px;
 }
+
+.drop_down_list {
+	position: absolute;
+	color: black;
+	background-color: white;
+	display: none;
+}
+
+.drop_down_list_element:hover {
+	background-color: gray;
+}

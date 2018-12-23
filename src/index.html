@@ -25,6 +25,7 @@
 	<script src="Kernel/Util.js"></script>
 	<script src="Main.js"></script>
 	<script src="Game/ActorComponentId.js"></script>
+	<script src="Debug/DebugPathRenderer.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -35,6 +36,12 @@
 		<div>
 			<input type="checkbox" id="collision_data_view_checkbox"/>
 			<label for="collision_data_view_checkbox">Collision Data</label>
+		</div>
+		<div>
+			<button type="button" id="debug_mode_select_button">Normal Mode</button>
+			<label for="debug_mode_select_button">Debug Mode</label>
+			<div id="debug_mode_drop_down_list" class="drop_down_list">
+			</div>
 		</div>
 	</section>
 </body>

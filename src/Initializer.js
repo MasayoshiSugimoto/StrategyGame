@@ -51,6 +51,11 @@ function Initializer() {
 		collisionRectangles()
 	))
 
+	const pathRenderer = makeLazy(() => DebugPathRenderer(
+		screen().canvas(),
+		worldProjection()
+	))
+
 	return {
 		worldProjection: worldProjection(),
 		mouse: mouse(),
@@ -62,6 +67,7 @@ function Initializer() {
 		screen: screen(),
 		collisionRenderer: collisionRenderer(),
 		createActor: createActor(),
+		pathRenderer: pathRenderer(),
 	}
 
 }

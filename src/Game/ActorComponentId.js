@@ -1,4 +1,5 @@
 const ActorComponentId = {}
 
-ActorComponentId.CIRCLE_RENDERER = 0
-ActorComponentId.COMPONENT_COUNT = 1
+ActorComponentId.NAVIGATION = 0
+ActorComponentId.CIRCLE_RENDERER = 1
+ActorComponentId.COMPONENT_COUNT = 2
