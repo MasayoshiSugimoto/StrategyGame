@@ -24,7 +24,7 @@ function CircleRendererComponent(_actor, _radius, _color, _worldProjection) {
 
 function renderCircleComponents(actors, canvas) {
 	actors.forEach(actor => {
-		actor.getComponent(ActorComponentId.CIRCLE_RENDERER)
-				.render(canvas)
+		const circleRendererComponent = actor.getComponent(ActorComponentId.CIRCLE_RENDERER)
+		if (circleRendererComponent !== undefined) circleRendererComponent.render(canvas)
 	})
 }
