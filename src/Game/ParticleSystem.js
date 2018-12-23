@@ -1,6 +1,6 @@
 function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 
-	const CONSTRAINT_ITERATION_NUMBER = 1
+	const CONSTRAINT_ITERATION_NUMBER = 5
 	const ENERGY_CONSERVATION = 0.97
 	const _fieldSize = Vector2D(_terrain.width(), _terrain.height())
 
@@ -19,7 +19,7 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 		const acceleration = 10.0
 		_particles.forEach(particle => {
 			const particle2Mouse =  mouse.substract(particle._position)
-			particle._acceleration = particle2Mouse.cut(acceleration)
+			particle._acceleration = particle2Mouse.resize(acceleration)
 		})
 	}
 
@@ -70,11 +70,6 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 
 		for (let i = 0; i < CONSTRAINT_ITERATION_NUMBER; i++) {
 			_particles.forEach(particle1 => {
-				//Keep particles in the terrain
-				particle1._position = particle1._position
-						.max(Vector2D.ZERO)
-						.min(_fieldSize)
-
 				applyTerrainCollision(particle1)
 
 				//Collision between particles
