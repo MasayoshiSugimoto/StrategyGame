@@ -70,6 +70,11 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 
 		for (let i = 0; i < CONSTRAINT_ITERATION_NUMBER; i++) {
 			_particles.forEach(particle1 => {
+				//Keep particles in the terrain
+				particle1._position = particle1._position
+						.max(Vector2D.ZERO)
+						.min(_fieldSize)
+
 				applyTerrainCollision(particle1)
 
 				//Collision between particles
