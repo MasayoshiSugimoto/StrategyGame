@@ -56,6 +56,16 @@ function Initializer() {
 		worldProjection()
 	))
 
+	const testDropDown = makeLazy(() => DropDown(
+		"test_drop_down",
+		"Label",
+		[
+			{text: "Default Mode", handler: () => {console.log("Default Mode")}},
+			{text: "Debug Path Mode", handler: () => {console.log("Debug Path Mode")}},
+		],
+		0
+	))()
+
 	return {
 		worldProjection: worldProjection(),
 		mouse: mouse(),

@@ -25,3 +25,7 @@ body {
 .drop_down_list_element:hover {
 	background-color: gray;
 }
+
+.drop_down_list_item:hover {
+	background-color: gray;
+}
