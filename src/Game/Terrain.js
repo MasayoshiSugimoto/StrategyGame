@@ -1,4 +1,4 @@
-function Terrain(_worldProjection, _terrainData) {
+function Terrain(_terrainData) {
 
 	const _height = _terrainData.split("\n").length - 2
 	const _width = _terrainData.split("\n")[1].length
@@ -36,13 +36,41 @@ function Terrain(_worldProjection, _terrainData) {
 	function isValidX(x) { return 0 <= x && x < width() }
 	function isValidY(y) { return 0 <= y && y < height() }
 
-	return {
+	function pathFinder() { return _pathFinder }
+
+	function keepInside(vector) {
+		return Vector2D(
+			clamp(0, vector.x(), width()),
+			clamp(0, vector.y(), height())
+		)
+	}
+
+	function toCell(worldCoordinates) {
+		const convertCoordinate = x =>
+			Math.floor(x / Terrain.CELL_SIZE_METER)
+
+		return Vector2D(
+			convertCoordinate(clamp(0, worldCoordinates.x(), width()-1)),
+			convertCoordinate(clamp(0, worldCoordinates.y(), height()-1))
+		)
+	}
+
+	const instance = {
 		width,
 		height,
 		isWall,
-		forWalls
+		forWalls,
+		pathFinder,
+		keepInside,
+		toCell
 	}
+
+	const _pathFinder = PathFinder(instance)
+
+	return instance
 }
+
+Terrain.CELL_SIZE_METER = 1
 
 Terrain.string2Data = function(dataAsString) {
 	let lines = dataAsString.split("\n")

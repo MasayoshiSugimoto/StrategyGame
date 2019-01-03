@@ -42,7 +42,7 @@ function DropDown(_id, _labelName, _listItems, _defaultIndex) {
 			div.innerText = item.text
 			div.onclick = () => {
 				button.innerText = item.text
-				item.handler()
+				item.handler(item.text)
 			}
 			_listContent.appendChild(div)
 		})

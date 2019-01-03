@@ -5,6 +5,20 @@ function DebugWindow() {
 	const _framePerSecondSpan = document.createElement("span")
 	_window.appendChild(_framePerSecondSpan)
 
+	let _debugMode = "Normal Mode"
+
+	{
+		const _debugModeDropDown = DropDown(
+			"debug_mode_drop_down",
+			"Debug Mode",
+			[
+				{text: "Normal Mode", handler: setDebugMode},
+				{text: "Debug Path Mode", handler: setDebugMode},
+			],
+			0
+		)
+	}
+
 	draw()
 
 	function draw() {
@@ -16,5 +30,12 @@ function DebugWindow() {
 		draw()
 	}
 
-	return {setFramePerSecond}
+	function setDebugMode(mode) {
+		console.log(mode + " set")
+		_debugMode = mode
+	}
+
+	function getDebugMode() { return _debugMode }
+
+	return {setFramePerSecond, getDebugMode}
 }

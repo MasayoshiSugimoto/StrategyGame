@@ -5,13 +5,16 @@
 
 	<script src="../data/terrain.js"></script>
 	<script src="Debug/CollisionRenderer.js"></script>
+	<script src="Debug/DebugPathRenderer.js"></script>
 	<script src="Debug/DebugWindow.js"></script>
 	<script src="Debug/FrameMonitor.js"></script>
 	<script src="Game/Actor.js"></script>
+	<script src="Game/ActorComponentId.js"></script>
 	<script src="Game/ActorFactory.js"></script>
 	<script src="Game/ActorSystem.js"></script>
 	<script src="Game/Mouse.js"></script>
 	<script src="Game/ParticleSystem.js"></script>
+	<script src="Game/PathFinder.js"></script>
 	<script src="Game/Terrain.js"></script>
 	<script src="Geometry/Rectangle.js"></script>
 	<script src="Geometry/Vector2D.js"></script>
@@ -20,13 +23,12 @@
 	<script src="Graphic/CircleRendererComponent.js"></script>
 	<script src="Graphic/Screen.js"></script>
 	<script src="Graphic/TerrainRenderer.js"></script>
+	<script src="Gui/DropDown.js"></script>
 	<script src="Initializer.js"></script>
 	<script src="Kernel/Math.js"></script>
+	<script src="Kernel/Matrix.js"></script>
 	<script src="Kernel/Util.js"></script>
 	<script src="Main.js"></script>
-	<script src="Game/ActorComponentId.js"></script>
-	<script src="Debug/DebugPathRenderer.js"></script>
-	<script src="Gui/DropDown.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -38,7 +40,7 @@
 			<input type="checkbox" id="collision_data_view_checkbox"/>
 			<label for="collision_data_view_checkbox">Collision Data</label>
 		</div>
-		<div id="test_drop_down"></div>
+		<div id="debug_mode_drop_down"></div>
 	</section>
 </body>
 

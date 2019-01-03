@@ -27,7 +27,7 @@ function Initializer() {
 
 	const worldProjection = makeLazy(() => WorldProjection())
 	const mouse = makeLazy(() => Mouse(worldProjection()))
-	const terrain = makeLazy(() => Terrain(worldProjection(), TERRAIN_DATA))
+	const terrain = makeLazy(() => Terrain(TERRAIN_DATA))
 	const screen = makeLazy(() => Screen())
 
 	const collisionRectangles = makeLazy(() =>
@@ -51,20 +51,12 @@ function Initializer() {
 		collisionRectangles()
 	))
 
-	const pathRenderer = makeLazy(() => DebugPathRenderer(
+	const debugPath = makeLazy(() => DebugPath(
 		screen().canvas(),
-		worldProjection()
+		worldProjection(),
+		terrain(),
+		mouse()
 	))
-
-	const testDropDown = makeLazy(() => DropDown(
-		"test_drop_down",
-		"Label",
-		[
-			{text: "Default Mode", handler: () => {console.log("Default Mode")}},
-			{text: "Debug Path Mode", handler: () => {console.log("Debug Path Mode")}},
-		],
-		0
-	))()
 
 	return {
 		worldProjection: worldProjection(),
@@ -77,7 +69,7 @@ function Initializer() {
 		screen: screen(),
 		collisionRenderer: collisionRenderer(),
 		createActor: createActor(),
-		pathRenderer: pathRenderer(),
+		debugPath: debugPath(),
 	}
 
 }

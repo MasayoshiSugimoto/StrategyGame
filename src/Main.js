@@ -15,11 +15,13 @@ function main() {
 		//Game update
 		initializer.particleSystem.update(deltaTimeMillisecond)
 		initializer.actorSystem.update()
+		initializer.debugPath.update()
 
 		//Rendering
 		initializer.screen.reset()
 		initializer.terrainRenderer.render()
 		initializer.collisionRenderer.render()
+		initializer.debugPath.render()
 		renderCircleComponents(initializer.actorSystem.getActors(), initializer.screen.canvas())
 		initializer.frameMonitor.onFrameDone(deltaTimeMillisecond)
 
