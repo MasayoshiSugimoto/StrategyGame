@@ -1,4 +1,10 @@
-function DebugPath(_canvas, _worldProjection, _terrain, _mouse) {
+function DebugPath(
+	_canvas,
+	_worldProjection,
+	_terrain,
+	_mouse,
+	_debugWindow
+) {
 
 	let _start = Vector2D.ZERO
 	let _end = Vector2D.ZERO
@@ -8,11 +14,18 @@ function DebugPath(_canvas, _worldProjection, _terrain, _mouse) {
 		_start = _terrain.toCell(_mouse)
 	})
 
+	function isEnabled() {
+		return _debugWindow.isDebugPathMode()
+	}
+
 	function update() {
+		if (!isEnabled()) return
 		_end = _terrain.toCell(_mouse)
 	}
 
 	function render() {
+		if (!isEnabled()) return
+
 		_canvas.save()
 		_canvas.fillStyle = "red"
 		{

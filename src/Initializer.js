@@ -55,7 +55,8 @@ function Initializer() {
 		screen().canvas(),
 		worldProjection(),
 		terrain(),
-		mouse()
+		mouse(),
+		debugWindow()
 	))
 
 	return {

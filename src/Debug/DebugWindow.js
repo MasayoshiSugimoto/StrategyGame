@@ -35,7 +35,7 @@ function DebugWindow() {
 		_debugMode = mode
 	}
 
-	function getDebugMode() { return _debugMode }
+	function isDebugPathMode() { return _debugMode === "Debug Path Mode" }
 
-	return {setFramePerSecond, getDebugMode}
+	return {setFramePerSecond, isDebugPathMode}
 }
