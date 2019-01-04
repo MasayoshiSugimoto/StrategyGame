@@ -12,20 +12,45 @@ function main() {
 		const deltaTimeMillisecond = timeStampMillisecond - lastTimeStamp
 		lastTimeStamp = timeStampMillisecond
 
+		const actors = initializer.actorSystem.getActors()
+
 		//Game update
-		initializer.particleSystem.update(deltaTimeMillisecond)
+		initializer.particleSystem.update(deltaTimeMillisecond, initializer.actorSystem)
 		initializer.actorSystem.update()
 		initializer.debugPath.update()
+		initializer.navigationSystem.update(actors)
 
 		//Rendering
 		initializer.screen.reset()
 		initializer.terrainRenderer.render()
 		initializer.collisionRenderer.render()
 		initializer.debugPath.render()
-		renderCircleComponents(initializer.actorSystem.getActors(), initializer.screen.canvas())
+		renderCircleComponents(actors, initializer.screen.canvas())
 		initializer.frameMonitor.onFrameDone(deltaTimeMillisecond)
+
+		debugTarget(initializer.actorSystem)
 
 		window.requestAnimationFrame(updater)
 	}
 	window.requestAnimationFrame(updater)
 }
+
+function debugTarget(actorSystem) {
+	const canvas = document.getElementById("screen").getContext("2d")
+	canvas.save()
+	canvas.strokeStyle = "green"
+	const worldProjection = WorldProjection()
+	actorSystem.getActors().forEach(actor => {
+		const navigationComponent = actor.getComponent(ActorComponentId.NAVIGATION)
+		const target = navigationComponent && navigationComponent.target
+		if (target !== undefined) {
+			drawVector(
+				canvas,
+				worldProjection.toScreenCoordinates(actor.getPosition()),
+				worldProjection.toScreenCoordinates(target)
+			)
+		}
+	})
+	canvas.restore()
+}
+

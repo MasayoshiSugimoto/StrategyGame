@@ -1,5 +1,5 @@
 const ActorComponentId = {}
 
-ActorComponentId.NAVIGATION = 0
-ActorComponentId.CIRCLE_RENDERER = 1
-ActorComponentId.COMPONENT_COUNT = 2
+ActorComponentId.NAVIGATION = "navigation"
+ActorComponentId.CIRCLE_RENDERER = "circleRenderer"
+ActorComponentId.PATH_FINDER = "pathFinder"

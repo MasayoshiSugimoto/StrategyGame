@@ -12,7 +12,9 @@ function ActorFactory(actorSystem, terrain, particleSystem, worldProjection) {
 			"white",
 			worldProjection
 		))
-		
+
+		actor.addComponent(ActorComponentId.NAVIGATION, NavigationSystem.createComponent())
+
 		return actor
 	}
 }

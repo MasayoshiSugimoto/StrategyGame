@@ -1,6 +1,6 @@
 function Actor(_id) {
 	let _position = Vector2D(0.0, 0.0)
-	const _components = []
+	const _components = {}
 
 	function id() { return _id }
 	function getPosition() { return _position }

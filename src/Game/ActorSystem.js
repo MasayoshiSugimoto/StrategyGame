@@ -1,4 +1,4 @@
-function ActorSystem(_particleSystem, _canvas) {
+function ActorSystem(_particleSystem) {
 	const _actors = []
 	let _nextActorId = 0
 

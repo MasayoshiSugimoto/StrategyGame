@@ -14,12 +14,27 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 		}
 	}
 
-	function applyForces() {
+	//Deprecated
+	function applyForcesOfMouse(actors) {
 		const mouse = Vector2D(_mouse.x(), _mouse.y())
 		const acceleration = 10.0
 		_particles.forEach(particle => {
 			const particle2Mouse =  mouse.substract(particle._position)
 			particle._acceleration = particle2Mouse.resize(acceleration)
+		})
+	}
+
+	function applyForces(actorSystem) {
+		_particles.forEach(particle => {
+			const actor = actorSystem.findActor(particle._id)
+			if (actor === undefined) return
+			const navigationComponent = actor.getComponent(ActorComponentId.NAVIGATION)
+			if (navigationComponent === undefined || navigationComponent.target === undefined) return
+			const acceleration = 10.0
+			if (navigationComponent.target.equals(particle._position)) return
+			particle._acceleration = navigationComponent.target
+					.substract(particle._position)
+					.resize(acceleration)
 		})
 	}
 
@@ -97,10 +112,10 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 		}
 	}
 
-	function update(deltaTimeMillisecond) {
+	function update(deltaTimeMillisecond, actorSystem) {
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
 		clean()
-		applyForces()
+		applyForces(actorSystem)
 		verlet(deltaTimeSecond)
 		satisfyConstraints()
 	}
