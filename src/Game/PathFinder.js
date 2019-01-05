@@ -17,6 +17,7 @@ function PathFinder(_terrain) {
 		_terrain.height(),
 		() => ({cost: 0, closed: false})
 	)
+	const _openListMap = Matrix.create(_terrain.width(), _terrain.height(), () => undefined)
 
 	const nodeEqual = node1 => node2 =>
 		node1.x === node2.x && node1.y === node2.y
@@ -27,6 +28,14 @@ function PathFinder(_terrain) {
 				node.cost = 0
 				node.closed = false
 			})
+		})
+	}
+
+	function initOpenListMap() {
+		_openListMap.forEach(line => {
+			for (let i = 0; i < line.length; i++) {
+				line[i] = undefined
+			}
 		})
 	}
 
@@ -41,6 +50,7 @@ function PathFinder(_terrain) {
 		}
 
 		initClosedList()
+		initOpenListMap()
 		const openList = new Heap(sortByDistance)
 		openList.push({x: start.x, y: start.y, cost: 0, heuristic: 0})
 		while (openList.length() > 0) {
@@ -66,12 +76,13 @@ function PathFinder(_terrain) {
 						continue
 				}
 				{
-					const alreadyTraversedNode = openList.find(finder)
-					if (alreadyTraversedNode && alreadyTraversedNode.cost <= nextNode.cost)
+					const openedNode = _openListMap[nextNode.x][nextNode.y]
+					if (openedNode && openedNode.cost <= nextNode.cost)
 						continue
 				}
 				nextNode.heuristic = nextNode.cost + distance(nextNode.x, nextNode.y, end)
 				openList.push(nextNode)
+				_openListMap[nextNode.x][nextNode.y] = nextNode
 				_steps[nextNode.x][nextNode.y] = connectedNode
 			}
 
