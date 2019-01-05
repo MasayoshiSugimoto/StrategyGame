@@ -63,6 +63,20 @@ function DebugPath(
 		_canvas.restore()
 	}
 
+	function benchmark() {
+		const randomCell = () => ({
+			x: Math.floor(Math.random() * _terrain.width()),
+			y: Math.floor(Math.random() * _terrain.height())
+		})
+		const stopWatch = StopWatch()
+		for (let i = 0; i < 1000; i++) {
+			_pathFinder.findPath(randomCell(), randomCell())
+		}
+		console.log("Path Finding Benchmark: " + stopWatch.lap())
+	}
+
+	benchmark()
+
 	return {
 		update,
 		render
