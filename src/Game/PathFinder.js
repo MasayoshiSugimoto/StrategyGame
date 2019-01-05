@@ -27,9 +27,10 @@ function PathFinder(_terrain) {
 		}
 
 		const closedList = []
-		const openList = [{x: start.x, y: start.y, cost: 0, heuristic: 0}]
-		while (openList.length > 0) {
-			const node = openList.shift()
+		const openList = new Heap(sortByDistance)
+		openList.push({x: start.x, y: start.y, cost: 0, heuristic: 0})
+		while (openList.length() > 0) {
+			const node = openList.pop()
 
 			if (nodeEqual(node)(end)) return buildPath(start, end)
 
@@ -59,7 +60,6 @@ function PathFinder(_terrain) {
 				openList.push(nextNode)
 				_steps[nextNode.x][nextNode.y] = connectedNode
 			}
-			openList.sort(sortByDistance)
 			closedList.push(node)
 		}
 		return []

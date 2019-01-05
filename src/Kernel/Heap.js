@@ -34,11 +34,11 @@ Heap.prototype.pop = function() {
 		if (rightIndex >= this.tree.length) {
 			childIndex = leftIndex
 		} else {
-			childIndex = (this.tree[leftIndex] <= this.tree[rightIndex])
+			childIndex = (this.comparator(this.tree[leftIndex], this.tree[rightIndex]) <= 0)
 					? leftIndex
 					: rightIndex
 		}
-		if (this.tree[childIndex] >= this.tree[index]) {
+		if (this.comparator(this.tree[childIndex], this.tree[index]) >= 0) {
 			break
 		}
 		const tmpNode = this.tree[index]
@@ -48,6 +48,14 @@ Heap.prototype.pop = function() {
 	}
 	this.tree.pop()
 	return root
+}
+
+Heap.prototype.length = function() {
+	return this.tree.length
+}
+
+Heap.prototype.find = function(finder) {
+	return this.tree.find(finder)
 }
 
 Heap.left = function(index) {

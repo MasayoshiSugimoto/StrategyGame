@@ -14,6 +14,17 @@ function DebugPath(
 		_start = _terrain.toCell(_mouse)
 	})
 
+	{
+		const debugWindow = document.getElementById("debug")
+		const benchmarkButton = document.createElement("button")
+		benchmarkButton.innerText = "PathFinder Benchmark"
+		benchmarkButton.onclick = benchmark
+		const pathDiv = document.createElement("div")
+
+		pathDiv.appendChild(benchmarkButton)
+		debugWindow.appendChild(pathDiv)
+	}
+
 	function isEnabled() {
 		return _debugWindow.isDebugPathMode()
 	}
@@ -75,7 +86,7 @@ function DebugPath(
 		console.log("Path Finding Benchmark: " + stopWatch.lap())
 	}
 
-	benchmark()
+	//benchmark()
 
 	return {
 		update,
