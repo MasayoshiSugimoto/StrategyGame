@@ -86,8 +86,6 @@ function DebugPath(
 		console.log("Path Finding Benchmark: " + stopWatch.lap())
 	}
 
-	//benchmark()
-
 	return {
 		update,
 		render

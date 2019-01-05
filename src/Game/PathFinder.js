@@ -11,10 +11,24 @@ function PathFinder(_terrain) {
 		{x: 1, y: 1, cost: Math.sqrt(2)},
 	]
 
-	const _steps = Matrix.create(_terrain.width(), _terrain.height(), 0)
+	const _steps = Matrix.create(_terrain.width(), _terrain.height(), () => 0)
+	const _closedList = Matrix.create(
+		_terrain.width(),
+		_terrain.height(),
+		() => ({cost: 0, closed: false})
+	)
 
 	const nodeEqual = node1 => node2 =>
 		node1.x === node2.x && node1.y === node2.y
+
+	function initClosedList() {
+		_closedList.forEach(line => {
+			line.forEach(node => {
+				node.cost = 0
+				node.closed = false
+			})
+		})
+	}
 
   function findPath(start, rawEnd) {
 		const sortByDistance = (node1, node2) =>
@@ -26,7 +40,7 @@ function PathFinder(_terrain) {
 			heuristic: 0
 		}
 
-		const closedList = []
+		initClosedList()
 		const openList = new Heap(sortByDistance)
 		openList.push({x: start.x, y: start.y, cost: 0, heuristic: 0})
 		while (openList.length() > 0) {
@@ -47,8 +61,8 @@ function PathFinder(_terrain) {
 
 				const finder = nodeEqual(nextNode)
 				{
-					const alreadyTraversedNode = closedList.find(finder)
-					if (alreadyTraversedNode && alreadyTraversedNode.cost <= nextNode.cost)
+					const closedNode = _closedList[nextNode.x][nextNode.y]
+					if (closedNode.closed && closedNode.cost <= nextNode.cost)
 						continue
 				}
 				{
@@ -60,7 +74,9 @@ function PathFinder(_terrain) {
 				openList.push(nextNode)
 				_steps[nextNode.x][nextNode.y] = connectedNode
 			}
-			closedList.push(node)
+
+			_closedList[node.x][node.y].closed = true
+			_closedList[node.x][node.y].cost = node.cost
 		}
 		return []
   }
