@@ -1,10 +1,15 @@
-function ActorFactory(actorSystem, terrain, particleSystem, worldProjection) {
+function ActorFactory(actorSystem, terrain, worldProjection) {
 	return () => {
-		let actor = actorSystem.createActor()
-
 		const x = Math.random() * terrain.width()
 		const y = Math.random() * terrain.height()
-		particleSystem.createParticle(Vector2D(x, y), actor.id())
+
+		let actor = actorSystem.createActor()
+		actor.setPosition(Vector2D(x, y))
+
+		actor.addComponent(
+			ActorComponentId.PARTICLE_SYSTEM,
+			ParticleSystem.createComponent(actor.getPosition())
+		)
 
 		actor.addComponent(ActorComponentId.CIRCLE_RENDERER, CircleRendererComponent(
 			actor,

@@ -9,20 +9,11 @@ function ActorSystem(_particleSystem) {
 		return actor
 	}
 
-	function update() {
-		const particles = _particleSystem.particlePositions()
-		particles.forEach(particle => {
-			_actors
-					.find(actor => actor.id() === particle.id())
-					.setPosition(particle.position())
-		})
-	}
-
 	function findActor(actorId) {
 		return _actors.find(actor => actor.id() === actorId)
 	}
 
 	function getActors() { return _actors }
 
-	return {createActor, update, findActor, getActors}
+	return {createActor, findActor, getActors}
 }

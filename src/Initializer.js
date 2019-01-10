@@ -37,7 +37,6 @@ function Initializer() {
 	const createActor = makeLazy(() => ActorFactory(
 		actorSystem(),
 		terrain(),
-		particleSystem(),
 		worldProjection()
 	))
 

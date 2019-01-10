@@ -3,57 +3,48 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 	const CONSTRAINT_ITERATION_NUMBER = 5
 	const ENERGY_CONSERVATION = 0.97
 	const _fieldSize = Vector2D(_terrain.width(), _terrain.height())
+	const ACTOR_ACCELERATION = 10.0
 
-	function Particle(_position, _id) {
-		return {
-			_id,
-			_position,
-			_oldPosition: _position,
-			_acceleration: Vector2D.ZERO,
-			_active: true
-		}
-	}
-
-	//Deprecated
-	function applyForcesOfMouse(actors) {
-		const mouse = Vector2D(_mouse.x(), _mouse.y())
-		const acceleration = 10.0
-		_particles.forEach(particle => {
-			const particle2Mouse =  mouse.substract(particle._position)
-			particle._acceleration = particle2Mouse.resize(acceleration)
+	function applyForces(actors) {
+		actors.forEach(actor => {
+			const particleComponent = actor.getComponent(
+				ActorComponentId.PARTICLE_SYSTEM
+			)
+			if (particleComponent === undefined) return
+			const navigationComponent = actor.getComponent(
+				ActorComponentId.NAVIGATION
+			)
+			if (navigationComponent === undefined) return
+			//If it's targeting itself don't do anything
+			if (navigationComponent.target.equals(actor.getPosition())) return
+			particleComponent._acceleration = navigationComponent.target
+					.substract(actor.getPosition())
+					.resize(ACTOR_ACCELERATION)
 		})
 	}
 
-	function applyForces(actorSystem) {
-		_particles.forEach(particle => {
-			const actor = actorSystem.findActor(particle._id)
-			if (actor === undefined) return
-			const navigationComponent = actor.getComponent(ActorComponentId.NAVIGATION)
-			if (navigationComponent === undefined || navigationComponent.target === undefined) return
-			const acceleration = 10.0
-			if (navigationComponent.target.equals(particle._position)) return
-			particle._acceleration = navigationComponent.target
-					.substract(particle._position)
-					.resize(acceleration)
+	function verlet(actors, deltaTimeSecond) {
+		actors.forEach(actor => {
+			const particleComponent = actor.getComponent(
+				ActorComponentId.PARTICLE_SYSTEM
+			)
+			if (particleComponent === undefined) return
+			const displacement = actor.getPosition()
+					.substract(particleComponent._oldPosition)
+					.add(particleComponent._acceleration
+							.scalarMultiply(deltaTimeSecond*deltaTimeSecond))
+					.scalarMultiply(ENERGY_CONSERVATION)
+			const newPosition = actor.getPosition().add(displacement)
+			particleComponent._oldPosition = actor.getPosition()
+			actor.setPosition(newPosition)
 		})
 	}
 
-	function verlet(deltaTimeSecond) {
-		_particles.forEach(particle => {
-			const tmpVector = particle._position
-			particle._position = particle._position.add(
-				particle._position
-						.substract(particle._oldPosition)
-						.add(particle._acceleration.scalarMultiply(deltaTimeSecond*deltaTimeSecond))
-						.scalarMultiply(ENERGY_CONSERVATION))
-			particle._oldPosition = tmpVector
-		})
-	}
-
-	function applyTerrainCollision(particle) {
+	function applyTerrainCollision(actor, particleComponent) {
+		const position = actor.getPosition()
 		_collisionRectangles.forEach(rectangle => {
-			const x = particle._position.x()
-			const y = particle._position.y()
+			const x = position.x()
+			const y = position.y()
 
 			const top = rectangle.y
 			const bottom = rectangle.y+rectangle.height
@@ -62,10 +53,10 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 
 			if (left < x && x < right && top < y && y < bottom) {
 				[
-					{diff: x-left, f: () => particle._position = new Vector2D(left, y)},
-					{diff: right-x, f: () => particle._position = new Vector2D(right, y)},
-					{diff: y-top, f: () => particle._position = new Vector2D(x, top)},
-					{diff: bottom-y, f: () => particle._position = new Vector2D(x, bottom)}
+					{diff: x-left, f: () => actor.setPosition(Vector2D(left, y))},
+					{diff: right-x, f: () => actor.setPosition(Vector2D(right, y))},
+					{diff: y-top, f: () => actor.setPosition(Vector2D(x, top))},
+					{diff: bottom-y, f: () => actor.setPosition(Vector2D(x, bottom))}
 				]
 				.reduce((selectedEffect, effect) => {
 						return effect.diff < selectedEffect.diff
@@ -77,75 +68,60 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 		})
 	}
 
-	function satisfyConstraints() {
+	function satisfyConstraints(actors) {
 		const minDistance = 2 * VECTOR_2D_EPSILON
 
 		const randomVector = () =>
 				Vector2D(Math.random() * minDistance, Math.random() * minDistance)
 
 		for (let i = 0; i < CONSTRAINT_ITERATION_NUMBER; i++) {
-			_particles.forEach(particle1 => {
-				//Keep particles in the terrain
-				particle1._position = particle1._position
-						.max(Vector2D.ZERO)
-						.min(_fieldSize)
+			actors.forEach(actor1 => {
+				const particleComponent = actor1.getComponent(
+					ActorComponentId.PARTICLE_SYSTEM
+				)
+				if (particleComponent === undefined) return
 
-				applyTerrainCollision(particle1)
-
-				//Collision between particles
-				_particles.forEach(particle2 => {
-					if (particle1 === particle2) return
-					const delta = particle2._position.substract(particle1._position)
+				//Collision between actors
+				actors.forEach(actor2 => {
+					if (actor1 === actor2) return
+					const delta = actor2.getPosition().substract(actor1.getPosition())
 					const deltaLength = Math.sqrt(delta.dot(delta))
 					if (deltaLength <= VECTOR_2D_EPSILON) {
-						particle1._position = particle1._position.add(randomVector())
-						particle2._position = particle2._position.add(randomVector())
+						actor1.setPosition(actor1.getPosition().add(randomVector()))
+						actor2.setPosition(actor2.getPosition().add(randomVector()))
 					} else if (deltaLength < _restLength) {
 						const diff = (_restLength - deltaLength) / deltaLength
 						const dx = delta.scalarMultiply(0.5*diff)
 								.cut(0.001)
-						particle1._position = particle1._position.substract(dx)
-						particle2._position = particle2._position.add(dx)
+						actor1.setPosition(actor1.getPosition().substract(dx))
+						actor2.setPosition(actor2.getPosition().add(dx))
 					}
 				})
+
+				//Keep actor in the terrain
+				actor1.setPosition(actor1.getPosition()
+						.max(Vector2D.ZERO)
+						.min(_fieldSize))
+
+				applyTerrainCollision(actor1, particleComponent)
 			})
 		}
 	}
 
-	function update(deltaTimeMillisecond, actorSystem) {
+	function update(deltaTimeMillisecond, actors) {
 		const deltaTimeSecond = deltaTimeMillisecond / 1000.0
-		clean()
-		applyForces(actorSystem)
-		verlet(deltaTimeSecond)
-		satisfyConstraints()
+		applyForces(actors)
+		verlet(actors, deltaTimeSecond)
+		satisfyConstraints(actors)
 	}
 
-	function createParticle(position, id) {
-		_particles.push(Particle(position, id))
-	}
+	return {update}
+}
 
-	function particlePositions() {
-		return _particles.map(particle => ({
-			id: () => particle._id,
-			position: () => particle._position
-		}))
-	}
-
-	function setInactive(id) {
-		const particle = _particles.find(particle => particle._id === id)
-		if (particle !== undefined) particle._active = false
-	}
-
-	function clean() {
-		_particles = _particles.filter(particle => particle._active)
-	}
-
-	let _particles = []
-
+ParticleSystem.createComponent = function(position) {
 	return {
-		update,
-		createParticle,
-		particlePositions,
-		setInactive
+		_oldPosition: position,
+		_acceleration: Vector2D.ZERO,
+		_active: true
 	}
 }
