@@ -165,6 +165,45 @@ Terrain.optimizeCollisionData = terrainData => {
 			}
 		}
 	}
-	return collisionRectangles
+
+	return Terrain.checkCollisionData(collisionRectangles, terrainData)
 }
 
+Terrain.checkCollisionData = function(collisionRectangles, terrain) {
+	for (let x = 0; x < terrain.width(); x++) {
+		for (let y = 1; y < terrain.height(); y++) {
+			if (terrain.isWall(x, y-1) && terrain.isWall(x,y)) {
+				let isInsideRectangle = false
+				for (let i = 0; i < collisionRectangles.length; i++) {
+					if (collisionRectangles[i].isInsideExclusive(x+0.5, y)) {
+						isInsideRectangle = true
+						break;
+					}
+				}
+				if (!isInsideRectangle) {
+					alert("CollisionRectangles: data is wrong")
+					throw "CollisionRectangles: data is wrong"
+				}
+			}
+		}
+	}
+
+	for (let x = 1; x < terrain.width(); x++) {
+		for (let y = 0; y < terrain.height(); y++) {
+			if (terrain.isWall(x-1, y) && terrain.isWall(x,y)) {
+				let isInsideRectangle = false
+				for (let i = 0; i < collisionRectangles.length; i++) {
+					if (collisionRectangles[i].isInsideExclusive(x, y+0.5)) {
+						isInsideRectangle = true
+						break;
+					}
+				}
+				if (!isInsideRectangle) {
+					alert("CollisionRectangles: data is wrong")
+					throw "CollisionRectangles: data is wrong"
+				}
+			}
+		}
+	}
+	return collisionRectangles
+}
