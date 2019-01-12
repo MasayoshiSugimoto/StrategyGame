@@ -207,3 +207,34 @@ Terrain.checkCollisionData = function(collisionRectangles, terrain) {
 	}
 	return collisionRectangles
 }
+
+/*
+ * This function keeps an actor outside of untraversable area
+ */
+Terrain.applyTerrainCollision = function(collisionRectangles, actor) {
+	const position = actor.getPosition()
+	collisionRectangles.forEach(rectangle => {
+		const x = position.x()
+		const y = position.y()
+
+		const top = rectangle.y
+		const bottom = rectangle.y+rectangle.height
+		const left = rectangle.x
+		const right = rectangle.x+rectangle.width
+
+		if (left < x && x < right && top < y && y < bottom) {
+			[
+				{diff: x-left, f: () => actor.setPosition(Vector2D(left, y))},
+				{diff: right-x, f: () => actor.setPosition(Vector2D(right, y))},
+				{diff: y-top, f: () => actor.setPosition(Vector2D(x, top))},
+				{diff: bottom-y, f: () => actor.setPosition(Vector2D(x, bottom))}
+			]
+			.reduce((selectedEffect, effect) => {
+					return effect.diff < selectedEffect.diff
+							? effect
+							: selectedEffect
+				}, {diff: Number.MAX_VALUE, f: () => {}})
+			.f()
+		}
+	})
+}

@@ -40,34 +40,6 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 		})
 	}
 
-	function applyTerrainCollision(actor, particleComponent) {
-		const position = actor.getPosition()
-		_collisionRectangles.forEach(rectangle => {
-			const x = position.x()
-			const y = position.y()
-
-			const top = rectangle.y
-			const bottom = rectangle.y+rectangle.height
-			const left = rectangle.x
-			const right = rectangle.x+rectangle.width
-
-			if (left < x && x < right && top < y && y < bottom) {
-				[
-					{diff: x-left, f: () => actor.setPosition(Vector2D(left, y))},
-					{diff: right-x, f: () => actor.setPosition(Vector2D(right, y))},
-					{diff: y-top, f: () => actor.setPosition(Vector2D(x, top))},
-					{diff: bottom-y, f: () => actor.setPosition(Vector2D(x, bottom))}
-				]
-				.reduce((selectedEffect, effect) => {
-						return effect.diff < selectedEffect.diff
-								? effect
-								: selectedEffect
-					}, {diff: Number.MAX_VALUE, f: () => {}})
-				.f()
-			}
-		})
-	}
-
 	function satisfyConstraints(actors) {
 		const minDistance = 2 * VECTOR_2D_EPSILON
 
@@ -103,7 +75,7 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 						.max(Vector2D.ZERO)
 						.min(_fieldSize))
 
-				applyTerrainCollision(actor1, particleComponent)
+				Terrain.applyTerrainCollision(_collisionRectangles, actor1)
 			})
 		}
 	}
