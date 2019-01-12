@@ -1,5 +1,7 @@
 function Initializer() {
 
+	let initializer = {}
+
 	function makeLazy(f) {
 		let instance = null
 		return () => {
@@ -17,7 +19,7 @@ function Initializer() {
 		collisionRectangles())
 	)
 
-	const actorSystem = makeLazy(() => ActorSystem(particleSystem()))
+	const actorSystem = makeLazy(() => ActorSystem())
 
 	const terrainRenderer = makeLazy(() => TerrainRenderer(
 		terrain(),
@@ -47,7 +49,7 @@ function Initializer() {
 
 	//Debug
 	const frameMonitor = makeLazy(() => FrameMonitor(debugWindow()))
-	const debugWindow = makeLazy(() => DebugWindow())
+	const debugWindow = makeLazy(() => DebugWindow(initializer))
 
 	const collisionRenderer = makeLazy(() => CollisionRenderer(
 		screen().canvas(),
@@ -63,19 +65,18 @@ function Initializer() {
 		debugWindow()
 	))
 
-	return {
-		worldProjection: worldProjection(),
-		mouse: mouse(),
-		terrain: terrain(),
-		particleSystem: particleSystem(),
-		actorSystem: actorSystem(),
-		terrainRenderer: terrainRenderer(),
-		frameMonitor: frameMonitor(),
-		screen: screen(),
-		collisionRenderer: collisionRenderer(),
-		createActor: createActor(),
-		debugPath: debugPath(),
-		navigationSystem: navigationSystem()
-	}
+	initializer.worldProjection = worldProjection(),
+	initializer.mouse = mouse(),
+	initializer.terrain = terrain(),
+	initializer.particleSystem = particleSystem(),
+	initializer.actorSystem = actorSystem(),
+	initializer.terrainRenderer = terrainRenderer(),
+	initializer.frameMonitor = frameMonitor(),
+	initializer.screen = screen(),
+	initializer.collisionRenderer = collisionRenderer(),
+	initializer.createActor = createActor(),
+	initializer.debugPath = debugPath(),
+	initializer.navigationSystem = navigationSystem()
 
+	return initializer
 }

@@ -28,6 +28,19 @@ function NavigationSystem(_mouse, _terrain) {
 NavigationSystem.createComponent = function() {
 	return {
 		path: [],
-		target: Vector2D.ZERO
+		target: Vector2D.ZERO,
+		calculateAcceleration: NavigationSystem.actorAcceleration
 	}
 }
+
+NavigationSystem.actorAcceleration = function(actor) {
+	const navigationComponent = actor.getComponent(ActorComponentId.NAVIGATION)
+	if (navigationComponent === undefined) return undefined
+	//If it's targeting itself don't do anything
+	if (navigationComponent.target.equals(actor.getPosition())) return undefined
+	return navigationComponent.target
+			.substract(actor.getPosition())
+			.resize(NAVIGATION_SYSTEM_ACTOR_ACCELERATION)
+}
+
+const NAVIGATION_SYSTEM_ACTOR_ACCELERATION = 10.0

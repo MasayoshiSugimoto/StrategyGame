@@ -3,7 +3,6 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 	const CONSTRAINT_ITERATION_NUMBER = 5
 	const ENERGY_CONSERVATION = 0.97
 	const _fieldSize = Vector2D(_terrain.width(), _terrain.height())
-	const ACTOR_ACCELERATION = 10.0
 
 	function applyForces(actors) {
 		actors.forEach(actor => {
@@ -11,15 +10,16 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 				ActorComponentId.PARTICLE_SYSTEM
 			)
 			if (particleComponent === undefined) return
+
 			const navigationComponent = actor.getComponent(
 				ActorComponentId.NAVIGATION
 			)
 			if (navigationComponent === undefined) return
-			//If it's targeting itself don't do anything
-			if (navigationComponent.target.equals(actor.getPosition())) return
-			particleComponent._acceleration = navigationComponent.target
-					.substract(actor.getPosition())
-					.resize(ACTOR_ACCELERATION)
+
+			const acceleration = navigationComponent.calculateAcceleration(actor)
+			if (acceleration === undefined) return
+
+			particleComponent._acceleration = acceleration
 		})
 	}
 

@@ -1,4 +1,4 @@
-function DebugWindow() {
+function DebugWindow(_initializer) {
 	const _window = document.getElementById("debug")
 	let _framePerSecond = 0
 
@@ -14,6 +14,10 @@ function DebugWindow() {
 			[
 				{text: "Normal Mode", handler: setDebugMode},
 				{text: "Debug Path Mode", handler: setDebugMode},
+				{
+					text: "Debug Collision Mode",
+					handler: () => DebugCollision.enable(_initializer)
+				},
 			],
 			0
 		)
