@@ -8,6 +8,7 @@ function Mouse(_worldProjection) {
 
 	function x() { return _mouseX }
 	function y() { return _mouseY }
+	function position() { return Vector2D(x(), y()) }
 
-	return {x, y}
+	return {x, y, position}
 }

@@ -11,12 +11,7 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 			)
 			if (particleComponent === undefined) return
 
-			const navigationComponent = actor.getComponent(
-				ActorComponentId.NAVIGATION
-			)
-			if (navigationComponent === undefined) return
-
-			const acceleration = navigationComponent.calculateAcceleration(actor)
+			const acceleration = particleComponent._calculateAcceleration(actor)
 			if (acceleration === undefined) return
 
 			particleComponent._acceleration = acceleration
@@ -90,10 +85,11 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 	return {update}
 }
 
-ParticleSystem.createComponent = function(position) {
+ParticleSystem.createComponent = function(position, calculateAcceleration) {
 	return {
 		_oldPosition: position,
 		_acceleration: Vector2D.ZERO,
-		_active: true
+		_active: true,
+		_calculateAcceleration: calculateAcceleration
 	}
 }

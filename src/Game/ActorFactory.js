@@ -3,12 +3,12 @@ function ActorFactory(actorSystem, terrain, worldProjection) {
 		const x = Math.random() * terrain.width()
 		const y = Math.random() * terrain.height()
 
-		let actor = actorSystem.createActor()
+		const actor = actorSystem.createActor()
 		actor.setPosition(Vector2D(x, y))
 
 		actor.addComponent(
 			ActorComponentId.PARTICLE_SYSTEM,
-			ParticleSystem.createComponent(actor.getPosition())
+			ParticleSystem.createComponent(actor.getPosition(), NavigationSystem.actorAcceleration)
 		)
 
 		actor.addComponent(ActorComponentId.CIRCLE_RENDERER, CircleRendererComponent(

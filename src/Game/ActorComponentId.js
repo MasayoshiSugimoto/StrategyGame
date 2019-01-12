@@ -1,6 +1,7 @@
 const ActorComponentId = {}
 
+ActorComponentId.CIRCLE_RENDERER = "circleRenderer"
 ActorComponentId.NAVIGATION = "navigation"
 ActorComponentId.PARTICLE_SYSTEM = "particleSystem"
-ActorComponentId.CIRCLE_RENDERER = "circleRenderer"
 ActorComponentId.PATH_FINDER = "pathFinder"
+ActorComponentId.DEBUG_COLLISION = "debugCollision"
