@@ -14,7 +14,7 @@ function Initializer() {
 
 	const particleSystem = makeLazy(() => ParticleSystem(
 		terrain(),
-		1.5, //restLength
+		1.0, //restLength
 		mouse(),
 		collisionRectangles())
 	)
