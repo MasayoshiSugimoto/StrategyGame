@@ -65,12 +65,16 @@ function ParticleSystem(_terrain, _restLength, _mouse, _collisionRectangles) {
 					}
 				})
 
+				//We need to apply the collision detection twice when there
+				//the entity enters a collision block by the corner
+				for (let i = 0; i < 2; i++) {
+					Terrain.applyTerrainCollision(_collisionRectangles, actor1)
+				}
+
 				//Keep actor in the terrain
 				actor1.setPosition(actor1.getPosition()
 						.max(Vector2D.ZERO)
 						.min(_fieldSize))
-
-				Terrain.applyTerrainCollision(_collisionRectangles, actor1)
 			})
 		}
 	}
