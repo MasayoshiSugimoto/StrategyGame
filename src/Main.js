@@ -15,9 +15,9 @@ function main() {
 		const actors = initializer.actorSystem.getActors()
 
 		//Game update
+		initializer.navigationSystem.update(actors)
 		initializer.particleSystem.update(deltaTimeMillisecond, actors)
 		initializer.debugPath.update()
-		initializer.navigationSystem.update(actors)
 
 		//Rendering
 		initializer.screen.reset()

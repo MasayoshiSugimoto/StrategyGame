@@ -50,8 +50,8 @@ function Terrain(_terrainData) {
 			Math.floor(x / Terrain.CELL_SIZE_METER)
 
 		return Vector2D(
-			convertCoordinate(clamp(0, worldCoordinates.x(), width()-1)),
-			convertCoordinate(clamp(0, worldCoordinates.y(), height()-1))
+			clamp(0, convertCoordinate(worldCoordinates.x()), width()-1),
+			clamp(0, convertCoordinate(worldCoordinates.y()), height()-1)
 		)
 	}
 
@@ -224,10 +224,10 @@ Terrain.applyTerrainCollision = function(collisionRectangles, actor) {
 
 		if (left < x && x < right && top < y && y < bottom) {
 			[
-				{diff: x-left, f: () => actor.setPosition(Vector2D(left, y))},
-				{diff: right-x, f: () => actor.setPosition(Vector2D(right, y))},
-				{diff: y-top, f: () => actor.setPosition(Vector2D(x, top))},
-				{diff: bottom-y, f: () => actor.setPosition(Vector2D(x, bottom))}
+				{diff: x-left, f: () => actor.setPosition(Vector2D(left-EPSILON, y))},
+				{diff: right-x, f: () => actor.setPosition(Vector2D(right+EPSILON, y))},
+				{diff: y-top, f: () => actor.setPosition(Vector2D(x, top-EPSILON))},
+				{diff: bottom-y, f: () => actor.setPosition(Vector2D(x, bottom+EPSILON))}
 			]
 			.reduce((selectedEffect, effect) => {
 					return effect.diff < selectedEffect.diff
