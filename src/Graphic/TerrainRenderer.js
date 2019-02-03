@@ -5,7 +5,7 @@ function TerrainRenderer(_terrain, _worldProjection, _canvas) {
 	function render() {
 		_canvas.save()
 		_canvas.strokeStyle = "white"
-		_canvas.fillStyle = "white"
+		_canvas.fillStyle = "grey"
 		const left = 0.0
 		const top = 0.0
 		const right = _worldProjection.meterToPixel(_terrain.width())

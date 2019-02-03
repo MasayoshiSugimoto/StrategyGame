@@ -14,7 +14,7 @@ function ActorFactory(actorSystem, terrain, worldProjection) {
 		actor.addComponent(ActorComponentId.CIRCLE_RENDERER, CircleRendererComponent(
 			actor,
 			10,
-			"white",
+			"red",
 			worldProjection
 		))
 
